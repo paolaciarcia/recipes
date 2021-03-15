@@ -11,7 +11,6 @@ class RecipeCell: UITableViewCell {
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var servesLabel: UILabel!
     @IBOutlet var timePrepareLabel: UILabel!
-    
     @IBOutlet var recipeImage: UIImageView!
 }
 

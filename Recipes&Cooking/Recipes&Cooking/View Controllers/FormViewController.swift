@@ -14,8 +14,6 @@ class FormViewController: UIViewController {
     @IBOutlet weak var instructionsTextView: UITextView!
     @IBOutlet weak var addFoodImageView: UIButton!
     @IBOutlet weak var navigationBar: UINavigationItem!
-    
-
     @IBAction func generateRecipe(_ sender: Any) {
         updateRecipe()
         if recipe.isValid() {
@@ -104,6 +102,7 @@ class FormViewController: UIViewController {
             guard let detailViewController = segue.destination as? DetailViewController else {
                 return
             }
+            
             detailViewController.recipe = recipe
             detailViewController.isNewRecipe = true
         }
@@ -115,8 +114,8 @@ extension FormViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-
 }
+
 extension FormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let selectedImage = info[.editedImage] as? UIImage else { return }

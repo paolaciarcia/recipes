@@ -14,7 +14,6 @@ class RecipesTableViewController: UITableViewController {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(updateRecipeList(notification:)), name: .RecipeSaved, object: nil)
         tableView.reloadData()
-        
     }
     
     // MARK: - Table view data source
@@ -46,7 +45,6 @@ class RecipesTableViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowRecipe" {
-
             
             guard let recipeViewController = segue.destination as?
                     DetailViewController,
@@ -55,20 +53,17 @@ class RecipesTableViewController: UITableViewController {
             }
             
             recipeViewController.recipe = recipe
-            
         }
         
         if segue.identifier == "AddRecipeSegue" {
             navigationItem.backBarButtonItem = UIBarButtonItem(title: "Voltar", style: .plain, target: nil, action: nil)
         }
     }
-        
     
     @IBAction func saveRecipe(unwindSegue: UIStoryboardSegue) {
     }
     
     @IBAction func cancelRecipe(unwindSegue: UIStoryboardSegue) {
-
     }
     
     @objc func updateRecipeList(notification: Notification) {
@@ -87,5 +82,4 @@ class RecipesTableViewController: UITableViewController {
         let indexPaths = [indexPath]
         tableView.deleteRows(at: indexPaths, with: .automatic)
     }
-    
 }

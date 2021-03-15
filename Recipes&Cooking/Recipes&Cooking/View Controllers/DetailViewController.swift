@@ -13,7 +13,6 @@ class DetailViewController: UIViewController {
     var recipe: Receita?
     var isNewRecipe = false
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
        
@@ -31,7 +30,6 @@ class DetailViewController: UIViewController {
             navigationItem.rightBarButtonItem = saveButton
             navigationItem.leftBarButtonItem = cancelButton
         }
-        
     }
 
     @objc func cancelRecipe() {
