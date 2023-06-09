@@ -10,7 +10,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var ingredientsTextView: UILabel!
     @IBOutlet weak var instructionsTextView: UILabel!
     
-    var recipe: Receita?
+    var recipe: Recipe?
     var isNewRecipe = false
     
     override func viewDidLoad() {
@@ -18,8 +18,8 @@ class DetailViewController: UIViewController {
        
         foodImageView.image = recipe?.image
         foodNameLabel.text = recipe?.name
-        prepareTimeLabel.text = "\(String(describing: recipe!.timePrepare!))"
-        servesLabel.text = "\(String(describing: recipe!.serves!))"
+        prepareTimeLabel.text = "\(String(describing: recipe!.timePrepare))"
+        servesLabel.text = "\(String(describing: recipe!.portions))"
         ingredientsTextView.text = recipe?.ingredients
         instructionsTextView.text = recipe?.instructions
         
@@ -38,7 +38,7 @@ class DetailViewController: UIViewController {
     
     @objc func saveRecipe() {
         NotificationCenter.default.post(name: .RecipeSaved, object: recipe)
-        performSegue(withIdentifier: "SaveRecipe", sender: nil)
+        self.navigationController?.popViewController(animated: true)
     }
 }
 

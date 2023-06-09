@@ -6,7 +6,7 @@ import CoreData
 
 class FormViewController: UIViewController {
     
-    let recipe = Receita(name: "", ingredients: "", instructions: "", image: UIImage.init())
+    let recipe = Recipe(name: "", timePrepare: 3, portions: 3, ingredients: "", instructions: "", image: UIImage())
 
     @IBOutlet weak var foodNameTextField: UITextField!
     @IBOutlet weak var servesTextField: UITextField!
@@ -91,9 +91,12 @@ class FormViewController: UIViewController {
         recipe.name = foodNameTextField.text ?? ""
         recipe.ingredients = ingredientsTextView.text ?? ""
         recipe.instructions = instructionsTextView.text ?? ""
-        recipe.timePrepare = Int(prepareTimeTextField.text ?? "")
-        recipe.serves = Int(servesTextField.text ?? "")
 
+        if let time = prepareTimeTextField.text,
+           let portions = servesTextField.text {
+            recipe.timePrepare = Int(time) ?? 0
+            recipe.portions = Int(portions) ?? 0
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -121,7 +124,7 @@ extension FormViewController: UIImagePickerControllerDelegate, UINavigationContr
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let selectedImage = info[.editedImage] as? UIImage else { return }
         addFoodImageView.imageView?.image = selectedImage
-        Receita.saveImage(selectedImage, forRecipe: recipe)
+        Recipe.saveImage(selectedImage, forRecipe: recipe)
         dismiss(animated: true)
     }
 }
