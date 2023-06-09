@@ -2,6 +2,7 @@
 
 import UIKit
 import PhotosUI
+import CoreData
 
 class FormViewController: UIViewController {
     

@@ -64,7 +64,7 @@
 		607C9A4325C0632A009A5E11 /* Recipes&Cooking */ = {
 			isa = PBXGroup;
 			children = (
-				60F0207925C1D68A00D59149 /* View Controllers */,
+				60F0207925C1D68A00D59149 /* ViewControllers */,
 				60F0206B25C0643B00D59149 /* Model */,
 				607C9A4425C0632A009A5E11 /* AppDelegate.swift */,
 				607C9A4625C0632A009A5E11 /* SceneDelegate.swift */,
@@ -85,14 +85,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		60F0207925C1D68A00D59149 /* View Controllers */ = {
+		60F0207925C1D68A00D59149 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				6013FFF725C354050081BF1E /* RecipesTableViewController.swift */,
 				607C9A4825C0632A009A5E11 /* DetailViewController.swift */,
 				60F0207E25C1D76F00D59149 /* FormViewController.swift */,
 			);
-			path = "View Controllers";
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
