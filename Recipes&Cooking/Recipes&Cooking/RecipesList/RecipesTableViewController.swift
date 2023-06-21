@@ -34,6 +34,7 @@ class RecipesTableViewController: UIViewController {
         super.viewDidLoad()
 
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Voltar", style: .plain, target: nil, action: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(createRecipe))
 
         NotificationCenter.default.addObserver(self, selector: #selector(updateRecipeList(notification:)), name: .RecipeSaved, object: nil)
         tableView.reloadData()
@@ -50,6 +51,11 @@ class RecipesTableViewController: UIViewController {
         }
         recipe.append(recipes)
         tableView.reloadData()
+    }
+
+    @objc func createRecipe() {
+        let formViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "formViewController") as? FormViewController
+        self.navigationController?.pushViewController(formViewController!, animated: true)
     }
 
     private func checkListEmpty() {
@@ -111,3 +117,8 @@ extension RecipesTableViewController: UITableViewDataSource {
             tableView.deleteRows(at: indexPaths, with: .automatic)
         }
     }
+
+#Preview("RecipesTableViewController") {
+    let viewController = RecipesTableViewController()
+    return viewController
+}
