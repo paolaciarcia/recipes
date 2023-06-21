@@ -39,6 +39,7 @@ class RecipeCell: UITableViewCell {
         let image = UIImageView()
         image.layer.cornerRadius = 10
         image.tintColor = UIColor.secondarySystemFill
+        image.contentMode = .scaleAspectFit
         image.layer.borderWidth = 8
         image.layer.borderColor = CGColor(gray: 50, alpha: 1)
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -79,14 +80,14 @@ class RecipeCell: UITableViewCell {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            image.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            image.centerYAnchor.constraint(equalTo: centerYAnchor),
-            image.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.8),
-            image.widthAnchor.constraint(equalTo: heightAnchor),
+            image.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+            image.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            image.heightAnchor.constraint(equalToConstant: 100),
+            image.widthAnchor.constraint(equalToConstant: 100),
 
-            stackView.centerYAnchor.constraint(equalTo: image.centerYAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
+            stackView.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 8),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            stackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
     }
 
@@ -106,3 +107,14 @@ class RecipeCell: UITableViewCell {
     }
 }
 
+#Preview("RecipeCell") {
+    let view = RecipeCell()
+    view.prepareCell(recipe: Recipe(name: "Frango",
+                                    timePrepare: 12,
+                                    portions: 2,
+                                    ingredients: "Frango, sal",
+                                    instructions: "Modo de preparo",
+                                    image: UIImage(systemName: "b.square.fill")))
+    view.backgroundColor = .brown
+    return view
+}

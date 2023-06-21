@@ -71,11 +71,6 @@ class RecipesTableViewController: UIViewController {
     // MARK: - Table view data source
 
 extension RecipesTableViewController: UITableViewDataSource {
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        1
-    }
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         recipe.count
     }
