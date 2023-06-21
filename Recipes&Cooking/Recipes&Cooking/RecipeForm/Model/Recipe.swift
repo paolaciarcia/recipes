@@ -22,6 +22,7 @@ class Recipe {
         self.ingredients = ingredients
         self.instructions = instructions        
     }
+
     
     func isValid() -> Bool {
         return !(name.isEmpty || ingredients.isEmpty || instructions.isEmpty || timePrepare == nil || portions == nil)

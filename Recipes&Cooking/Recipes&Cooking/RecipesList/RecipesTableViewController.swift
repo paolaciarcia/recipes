@@ -3,6 +3,7 @@
 import UIKit
 
 class RecipesTableViewController: UIViewController {
+
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -20,16 +21,20 @@ class RecipesTableViewController: UIViewController {
         tableView.delegate = self
         tableView.rowHeight = 80
         tableView.register(RecipeCell.self, forCellReuseIdentifier: String(describing: RecipeCell.self))
-        tableView.backgroundColor = .white
         return tableView
     }()
 
+    private var emptyView = EmptyListView()
+
     override func loadView() {
-        view = tableView
+        checkListEmpty()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Voltar", style: .plain, target: nil, action: nil)
+
         NotificationCenter.default.addObserver(self, selector: #selector(updateRecipeList(notification:)), name: .RecipeSaved, object: nil)
         tableView.reloadData()
     }
@@ -47,6 +52,14 @@ class RecipesTableViewController: UIViewController {
         tableView.reloadData()
     }
 
+    private func checkListEmpty() {
+        if recipe.isEmpty {
+            view = emptyView
+        } else {
+            view = tableView
+        }
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowRecipe" {
 
@@ -57,10 +70,6 @@ class RecipesTableViewController: UIViewController {
             }
 
             recipeViewController.recipe = recipe
-        }
-
-        if segue.identifier == "AddRecipeSegue" {
-            navigationItem.backBarButtonItem = UIBarButtonItem(title: "Voltar", style: .plain, target: nil, action: nil)
         }
     }
 }
