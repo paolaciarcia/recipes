@@ -25,10 +25,6 @@ class RecipesTableViewController: UIViewController {
     }()
 
     private var emptyView = EmptyListView()
-
-    override func loadView() {
-        checkListEmpty()
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +34,11 @@ class RecipesTableViewController: UIViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(updateRecipeList(notification:)), name: .RecipeSaved, object: nil)
         tableView.reloadData()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        checkEmptyList()
     }
 
     @available(*, unavailable)
@@ -58,24 +59,11 @@ class RecipesTableViewController: UIViewController {
         self.navigationController?.pushViewController(formViewController!, animated: true)
     }
 
-    private func checkListEmpty() {
+    private func checkEmptyList() {
         if recipe.isEmpty {
             view = emptyView
         } else {
             view = tableView
-        }
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ShowRecipe" {
-
-            guard let recipeViewController = segue.destination as?
-                    DetailViewController,
-                  let recipe = sender as? Recipe else {
-                return
-            }
-
-            recipeViewController.recipe = recipe
         }
     }
 }
@@ -106,11 +94,13 @@ extension RecipesTableViewController: UITableViewDataSource {
 
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             let recipes = recipe[indexPath.row]
-            performSegue(withIdentifier: "ShowRecipe", sender: recipes)
+            guard let recipeViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController else { return }
+
+            recipeViewController.recipe = recipes
+            navigationController?.show(recipeViewController, sender: recipes)
         }
 
         func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-
             recipe.remove(at: indexPath.row)
 
             let indexPaths = [indexPath]
