@@ -59,19 +59,6 @@ class RecipeCell: UITableViewCell {
         setupCell()
     }
 
-//    init(titleLabel: UILabel,
-//         portionsLabel: UILabel,
-//         time: UILabel,
-//         image: UIImageView = UIImageView(image: UIImage(systemName: "fork.knife"))) {
-//        self.titleLabel = titleLabel
-//        self.portionsLabel = portionsLabel
-//        self.time = time
-//        self.image = image
-//
-//        super.init(frame: .zero)
-//        setupCell()
-//    }
-
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -81,9 +68,6 @@ class RecipeCell: UITableViewCell {
         setupViewHierarchy()
         setupConstraints()
     }
-
-//    private func setupLayout() {
-//    }
 
     private func setupViewHierarchy() {
         addSubview(image)
