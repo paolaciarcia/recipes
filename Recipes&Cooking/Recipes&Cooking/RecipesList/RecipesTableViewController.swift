@@ -15,11 +15,10 @@ class RecipesTableViewController: UIViewController {
     private var recipe = [Recipe]()
 
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
+        let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.rowHeight = 80
         tableView.register(RecipeCell.self, forCellReuseIdentifier: String(describing: RecipeCell.self))
         return tableView
     }()
@@ -29,16 +28,18 @@ class RecipesTableViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        title = "Receitas"
+        navigationController?.navigationBar.prefersLargeTitles = true
+
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Voltar", style: .plain, target: nil, action: nil)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(createRecipe))
-
-        NotificationCenter.default.addObserver(self, selector: #selector(updateRecipeList(notification:)), name: .RecipeSaved, object: nil)
-        tableView.reloadData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         checkEmptyList()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateRecipeList(notification:)), name: .RecipeSaved, object: nil)
+        tableView.reloadData()
     }
 
     @available(*, unavailable)

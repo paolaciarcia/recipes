@@ -17,6 +17,8 @@
 		60C1F6BB25CC833900D1AADE /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1F6BA25CC833900D1AADE /* RecipeCell.swift */; };
 		60F0206F25C064B200D59149 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F0206D25C064B200D59149 /* Recipe.swift */; };
 		60F0207F25C1D76F00D59149 /* FormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F0207E25C1D76F00D59149 /* FormViewController.swift */; };
+		C555D03A2A447DC30001DF25 /* FormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C555D0392A447DC30001DF25 /* FormView.swift */; };
+		C555D03D2A44955A0001DF25 /* DescritionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C555D03C2A44955A0001DF25 /* DescritionLabel.swift */; };
 		C5F1280B2A336C7000532FBF /* RecipeListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F1280A2A336C7000532FBF /* RecipeListTableView.swift */; };
 		C5F1280E2A33B05800532FBF /* EmptyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F1280D2A33B05800532FBF /* EmptyListView.swift */; };
 /* End PBXBuildFile section */
@@ -34,6 +36,8 @@
 		60C1F6BA25CC833900D1AADE /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
 		60F0206D25C064B200D59149 /* Recipe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		60F0207E25C1D76F00D59149 /* FormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewController.swift; sourceTree = "<group>"; };
+		C555D0392A447DC30001DF25 /* FormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormView.swift; sourceTree = "<group>"; };
+		C555D03C2A44955A0001DF25 /* DescritionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescritionLabel.swift; sourceTree = "<group>"; };
 		C5F1280A2A336C7000532FBF /* RecipeListTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeListTableView.swift; sourceTree = "<group>"; };
 		C5F1280D2A33B05800532FBF /* EmptyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -68,6 +72,7 @@
 		607C9A4325C0632A009A5E11 /* Recipes&Cooking */ = {
 			isa = PBXGroup;
 			children = (
+				C555D03B2A4495490001DF25 /* Helpers */,
 				C5F128062A336A5D00532FBF /* RecipeForm */,
 				C5F128052A336A2C00532FBF /* RecipesDetail */,
 				C5F128042A3369E800532FBF /* RecipesList */,
@@ -79,6 +84,22 @@
 				607C9A5225C0632D009A5E11 /* Info.plist */,
 			);
 			path = "Recipes&Cooking";
+			sourceTree = "<group>";
+		};
+		C555D0382A447D8B0001DF25 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C555D0392A447DC30001DF25 /* FormView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C555D03B2A4495490001DF25 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				C555D03C2A44955A0001DF25 /* DescritionLabel.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		C5F128042A3369E800532FBF /* RecipesList */ = {
@@ -102,6 +123,7 @@
 		C5F128062A336A5D00532FBF /* RecipeForm */ = {
 			isa = PBXGroup;
 			children = (
+				C555D0382A447D8B0001DF25 /* Views */,
 				C5F128082A336A9C00532FBF /* Model */,
 				60F0207E25C1D76F00D59149 /* FormViewController.swift */,
 			);
@@ -203,8 +225,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C555D03D2A44955A0001DF25 /* DescritionLabel.swift in Sources */,
 				607C9A4925C0632A009A5E11 /* DetailViewController.swift in Sources */,
 				607C9A4525C0632A009A5E11 /* AppDelegate.swift in Sources */,
+				C555D03A2A447DC30001DF25 /* FormView.swift in Sources */,
 				60F0206F25C064B200D59149 /* Recipe.swift in Sources */,
 				C5F1280B2A336C7000532FBF /* RecipeListTableView.swift in Sources */,
 				60C1F6BB25CC833900D1AADE /* RecipeCell.swift in Sources */,
