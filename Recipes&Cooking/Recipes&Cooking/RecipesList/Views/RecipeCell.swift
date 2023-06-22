@@ -107,14 +107,14 @@ class RecipeCell: UITableViewCell {
     }
 }
 
-#Preview("RecipeCell") {
-    let view = RecipeCell()
-    view.prepareCell(recipe: Recipe(name: "Frango",
-                                    timePrepare: 12,
-                                    portions: 2,
-                                    ingredients: "Frango, sal",
-                                    instructions: "Modo de preparo",
-                                    image: UIImage(systemName: "b.square.fill")))
-    view.backgroundColor = .brown
-    return view
-}
+//#Preview("RecipeCell") {
+//    let view = RecipeCell()
+//    view.prepareCell(recipe: Recipe(name: "Frango",
+//                                    timePrepare: 12,
+//                                    portions: 2,
+//                                    ingredients: "Frango, sal",
+//                                    instructions: "Modo de preparo",
+//                                    image: UIImage(systemName: "b.square.fill")))
+//    view.backgroundColor = .brown
+//    return view
+//}

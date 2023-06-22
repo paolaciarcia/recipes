@@ -24,7 +24,11 @@ class RecipesTableViewController: UIViewController {
     }()
 
     private var emptyView = EmptyListView()
-    
+
+    override func loadView() {
+        checkEmptyList()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -37,7 +41,6 @@ class RecipesTableViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        checkEmptyList()
         NotificationCenter.default.addObserver(self, selector: #selector(updateRecipeList(notification:)), name: .RecipeSaved, object: nil)
         tableView.reloadData()
     }
@@ -56,8 +59,8 @@ class RecipesTableViewController: UIViewController {
     }
 
     @objc func createRecipe() {
-        let formViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "formViewController") as? FormViewController
-        self.navigationController?.pushViewController(formViewController!, animated: true)
+        let viewController = FormViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     private func checkEmptyList() {
@@ -104,7 +107,7 @@ extension RecipesTableViewController: UITableViewDataSource {
         }
     }
 
-#Preview("RecipesTableViewController") {
-    let viewController = RecipesTableViewController()
-    return viewController
-}
+//#Preview("RecipesTableViewController") {
+//    let viewController = RecipesTableViewController()
+//    return viewController
+//}

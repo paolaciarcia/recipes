@@ -11,48 +11,18 @@ import UIKit
 final class FormView: UIView {
     var isContinueButtonEnabled: Bool = false
 
-    private let firstHorizontalStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.spacing = 8
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
-    }()
-
-    private let secondHorizontalStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.spacing = 8
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
-    }()
-
-    private let thirdHorizontalStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.spacing = 8
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
-    }()
+    private let firstSectionView = InitialRecipeSectionView()
 
     private let verticalStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.spacing = 8
+        stack.spacing = 12
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
 
-    private let dishNameLabel = DescritionLabel("Nome do prato:")
-    private let portionAmountLabel = DescritionLabel("Porções:")
-    private let cookingTimeLabel = DescritionLabel("Tempo de preparo:")
     private let ingridientsLabel = DescritionLabel("Ingredientes:")
     private let preparationMethodLabel = DescritionLabel("Modo de preparo:")
-
-    private let dishTextField = UITextField()
-    private let portionTextField = UITextField()
-    private let cookingTimeField = UITextField()
-
     private let ingridientsTextView = UITextView()
     private let preparationMethodTextView = UITextView()
 
@@ -70,7 +40,7 @@ final class FormView: UIView {
         let button = UIButton()
         button.setTitle("CONTINUAR", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .lightGray
+        button.layer.borderWidth = 2
         button.layer.cornerRadius = 24
         button.isEnabled = isContinueButtonEnabled
         button.addTarget(self, action: #selector(continueButtonHandler), for: .touchUpInside)
@@ -89,30 +59,19 @@ final class FormView: UIView {
     }
 
     private func setup() {
-        dishTextField.translatesAutoresizingMaskIntoConstraints = false
-        portionTextField.translatesAutoresizingMaskIntoConstraints = false
-        cookingTimeField.translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = .systemOrange
+        firstSectionView.translatesAutoresizingMaskIntoConstraints = false
         ingridientsTextView.translatesAutoresizingMaskIntoConstraints = false
+        ingridientsTextView.layer.cornerRadius = 8
         preparationMethodTextView.translatesAutoresizingMaskIntoConstraints = false
+        preparationMethodTextView.layer.cornerRadius = 8
         setupViewHierarchy()
         setupConstraints()
     }
 
     private func setupViewHierarchy() {
-        addSubview(firstHorizontalStackView)
-        firstHorizontalStackView.addArrangedSubview(dishNameLabel)
-        firstHorizontalStackView.addArrangedSubview(dishTextField)
-        addSubview(secondHorizontalStackView)
-        secondHorizontalStackView.addArrangedSubview(portionAmountLabel)
-        secondHorizontalStackView.addArrangedSubview(portionTextField)
-        addSubview(thirdHorizontalStackView)
-        thirdHorizontalStackView.addArrangedSubview(cookingTimeLabel)
-        thirdHorizontalStackView.addArrangedSubview(cookingTimeField)
-
+        addSubview(firstSectionView)
         addSubview(verticalStackView)
-        verticalStackView.addArrangedSubview(firstHorizontalStackView)
-        verticalStackView.addArrangedSubview(secondHorizontalStackView)
-        verticalStackView.addArrangedSubview(thirdHorizontalStackView)
         verticalStackView.addArrangedSubview(ingridientsLabel)
         verticalStackView.addArrangedSubview(ingridientsTextView)
         verticalStackView.addArrangedSubview(preparationMethodLabel)
@@ -124,12 +83,18 @@ final class FormView: UIView {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            verticalStackView.topAnchor.constraint(equalTo: topAnchor, constant: 12),
-            verticalStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            verticalStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            verticalStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
-        ])
+            firstSectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            firstSectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            firstSectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            verticalStackView.topAnchor.constraint(equalTo: firstSectionView.bottomAnchor, constant: 20),
+            verticalStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 12),
+            verticalStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -12),
+            verticalStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
 
+            ingridientsTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 150),
+            preparationMethodTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 150),
+            continueButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
     }
 
     @objc private func addImageHandler() {
@@ -140,3 +105,8 @@ final class FormView: UIView {
         print("continuar")
     }
 }
+
+//#Preview("FormView") {
+//    let view = FormView()
+//    return view
+//}

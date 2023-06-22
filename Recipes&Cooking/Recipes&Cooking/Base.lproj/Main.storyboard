@@ -5,195 +5,21 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22089"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Nova Receita-->
-        <scene sceneID="kO0-fR-Q6c">
-            <objects>
-                <viewController storyboardIdentifier="formViewController" id="3mM-il-FDo" customClass="FormViewController" customModule="Recipes_Cooking" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Sva-01-qiC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="ISk-Tx-ZLG">
-                                <rect key="frame" x="20" y="79" width="374" height="737.33333333333337"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="aXC-Yv-ETG">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="122"/>
-                                        <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dNI-0d-tsp" userLabel="Food Name Stack">
-                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nome do prato: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xn0-QP-TrD">
-                                                        <rect key="frame" x="0.0" y="0.0" width="123.33333333333333" height="30"/>
-                                                        <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="16"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8qH-kb-mKF">
-                                                        <rect key="frame" x="131.33333333333337" y="0.0" width="242.66666666666663" height="30"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="30" id="Vdp-g5-Y7O"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits"/>
-                                                        <connections>
-                                                            <outlet property="delegate" destination="3mM-il-FDo" id="7RH-uu-4Bp"/>
-                                                        </connections>
-                                                    </textField>
-                                                </subviews>
-                                            </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="6Ag-u1-39O" userLabel="Seves Stack">
-                                                <rect key="frame" x="0.0" y="46" width="374" height="30"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Qtd. Porções:    " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nxI-j3-XSS">
-                                                        <rect key="frame" x="0.0" y="0.0" width="122.66666666666667" height="30"/>
-                                                        <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="16"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="H2Q-o3-zOf">
-                                                        <rect key="frame" x="130.66666666666663" y="0.0" width="243.33333333333337" height="30"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                                        <connections>
-                                                            <outlet property="delegate" destination="3mM-il-FDo" id="Bdo-HC-jzk"/>
-                                                        </connections>
-                                                    </textField>
-                                                </subviews>
-                                            </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="m1l-yT-DQw" userLabel="Prepare Stack">
-                                                <rect key="frame" x="0.0" y="92" width="374" height="30"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tempo Preparo:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J3v-Dc-4Ym">
-                                                        <rect key="frame" x="0.0" y="0.0" width="123.66666666666667" height="30"/>
-                                                        <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="16"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="H2L-aV-5ku">
-                                                        <rect key="frame" x="131.66666666666663" y="0.0" width="242.33333333333337" height="30"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                                        <connections>
-                                                            <outlet property="delegate" destination="3mM-il-FDo" id="yAL-UX-0t8"/>
-                                                        </connections>
-                                                    </textField>
-                                                </subviews>
-                                            </stackView>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstItem="H2Q-o3-zOf" firstAttribute="height" secondItem="8qH-kb-mKF" secondAttribute="height" id="9QR-ua-wwL"/>
-                                            <constraint firstItem="H2L-aV-5ku" firstAttribute="height" secondItem="8qH-kb-mKF" secondAttribute="height" id="RYb-La-VeQ"/>
-                                        </constraints>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Vz9-mn-sAZ">
-                                        <rect key="frame" x="0.0" y="147" width="374" height="590.33333333333337"/>
-                                        <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="8my-Nz-QSk">
-                                                <rect key="frame" x="0.0" y="0.0" width="374" height="244.66666666666666"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ingredientes:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uav-3I-ymz">
-                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="18.666666666666668"/>
-                                                        <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="16"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Tue-kk-o9W">
-                                                        <rect key="frame" x="0.0" y="36.666666666666686" width="374" height="208"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <fontDescription key="fontDescription" name="ArialHebrew" family="Arial Hebrew" pointSize="15"/>
-                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                    </textView>
-                                                </subviews>
-                                            </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="LWS-mg-17G">
-                                                <rect key="frame" x="0.0" y="260.66666666666669" width="374" height="244.66666666666669"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Modo de Preparo:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GhI-km-bfc">
-                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="18.666666666666668"/>
-                                                        <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="16"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="GMu-qk-Wj8">
-                                                        <rect key="frame" x="0.0" y="36.666666666666686" width="374" height="208"/>
-                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <fontDescription key="fontDescription" name="ArialHebrew" family="Arial Hebrew" pointSize="15"/>
-                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                    </textView>
-                                                </subviews>
-                                            </stackView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1FQ-16-WlG">
-                                                <rect key="frame" x="0.0" y="521.33333333333337" width="374" height="31"/>
-                                                <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="16"/>
-                                                <state key="normal" title="Adicionar imagem">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="updateImage" destination="3mM-il-FDo" eventType="touchUpInside" id="jNP-Y9-FK9"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mJG-86-Der">
-                                                <rect key="frame" x="0.0" y="568.33333333333337" width="374" height="22"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="chevron.right.2" catalog="system"/>
-                                                <connections>
-                                                    <action selector="generateRecipe:" destination="3mM-il-FDo" eventType="touchUpInside" id="JtF-H8-qdm"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstItem="GMu-qk-Wj8" firstAttribute="height" secondItem="Tue-kk-o9W" secondAttribute="height" id="ilI-Gs-km3"/>
-                                        </constraints>
-                                    </stackView>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="ONG-b6-x6V"/>
-                        <color key="backgroundColor" red="0.70359342987767337" green="0.39037489413431081" blue="0.30032203984909489" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                        <constraints>
-                            <constraint firstItem="ONG-b6-x6V" firstAttribute="bottom" secondItem="Vz9-mn-sAZ" secondAttribute="bottom" constant="45.666666666666629" id="2mp-L3-svr"/>
-                            <constraint firstItem="ISk-Tx-ZLG" firstAttribute="leading" secondItem="ONG-b6-x6V" secondAttribute="leading" constant="20" id="FkP-eX-E1U"/>
-                            <constraint firstItem="ISk-Tx-ZLG" firstAttribute="top" secondItem="ONG-b6-x6V" secondAttribute="top" constant="35" id="Z9p-Pw-t9E"/>
-                            <constraint firstItem="ONG-b6-x6V" firstAttribute="trailing" secondItem="ISk-Tx-ZLG" secondAttribute="trailing" constant="20" id="gZC-C0-jjQ"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Nova Receita" id="XE0-YI-bpH"/>
-                    <connections>
-                        <outlet property="addFoodImageView" destination="1FQ-16-WlG" id="Yzh-pX-ZcS"/>
-                        <outlet property="foodNameTextField" destination="8qH-kb-mKF" id="fcY-Mg-84w"/>
-                        <outlet property="ingredientsTextView" destination="Tue-kk-o9W" id="BT9-R3-8Cu"/>
-                        <outlet property="instructionsTextView" destination="GMu-qk-Wj8" id="OQE-5h-sXO"/>
-                        <outlet property="navigationBar" destination="XE0-YI-bpH" id="zxR-sx-Mz7"/>
-                        <outlet property="prepareTimeTextField" destination="H2L-aV-5ku" id="Cbh-DR-spl"/>
-                        <outlet property="servesTextField" destination="H2Q-o3-zOf" id="igW-5M-pLz"/>
-                        <segue destination="BYZ-38-t0r" kind="show" identifier="NovaReceita" id="4gs-KC-B4N"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="uon-it-zV3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-978.26086956521749" y="-132.58928571428572"/>
-        </scene>
         <!--Detail View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="detailViewController" id="BYZ-38-t0r" customClass="DetailViewController" customModule="Recipes_Cooking" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="886"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SD-default-image" translatesAutoresizingMaskIntoConstraints="NO" id="epR-J1-BN5">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="268.66666666666669"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="268.66666666666669"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="uBg-z8-3fd" userLabel="Food Name">
-                                <rect key="frame" x="20" y="278.66666666666669" width="200" height="53.333333333333314"/>
+                                <rect key="frame" x="20" y="322.66666666666669" width="200" height="53.333333333333314"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" placeholderIntrinsicWidth="200" placeholderIntrinsicHeight="27.333333333333332" text="Gratinado de frango" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HJW-54-jeN">
                                         <rect key="frame" x="0.0" y="0.0" width="200" height="27.333333333333332"/>
@@ -224,19 +50,19 @@
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ingredientes:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YWV-mz-K9G">
-                                <rect key="frame" x="20" y="351.66666666666669" width="105" height="23.333333333333314"/>
+                                <rect key="frame" x="20" y="395.66666666666669" width="105" height="23.333333333333314"/>
                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Modo de Preparo:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P8J-rT-wiB">
-                                <rect key="frame" x="20" y="548" width="374" height="23.333333333333371"/>
+                                <rect key="frame" x="20" y="592" width="374" height="23.333333333333371"/>
                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="n7f-8a-zHL" userLabel="Preparo">
-                                <rect key="frame" x="336" y="280.66666666666669" width="58" height="51"/>
+                                <rect key="frame" x="336" y="324.66666666666669" width="58" height="51"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" axis="vertical" distribution="fillEqually" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Jyt-Ti-Aeh" userLabel="Preparo">
                                         <rect key="frame" x="0.0" y="0.0" width="58" height="51"/>
@@ -274,7 +100,7 @@
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yqJ-Ac-c0f">
-                                <rect key="frame" x="20" y="383" width="374" height="150"/>
+                                <rect key="frame" x="20" y="427" width="374" height="150"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="150" id="44E-ja-Jhr"/>
                                 </constraints>
@@ -284,7 +110,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RmF-Ve-Ufe">
-                                <rect key="frame" x="20" y="579.33333333333337" width="374" height="150"/>
+                                <rect key="frame" x="20" y="623.33333333333337" width="374" height="150"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="150" id="GNZ-8R-i19"/>
                                 </constraints>
@@ -340,9 +166,5 @@
     </scenes>
     <resources>
         <image name="SD-default-image" width="735" height="552"/>
-        <image name="chevron.right.2" catalog="system" width="128" height="108"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

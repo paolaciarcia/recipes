@@ -14,6 +14,7 @@ final class DescritionLabel: UILabel {
         self.text = text
         textColor = .white
         numberOfLines = 1
+        setContentHuggingPriority(.defaultHigh, for: .horizontal)
         translatesAutoresizingMaskIntoConstraints = false
     }
 
