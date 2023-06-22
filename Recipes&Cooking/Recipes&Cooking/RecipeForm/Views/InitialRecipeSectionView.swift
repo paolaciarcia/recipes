@@ -8,7 +8,11 @@
 import UIKit
 
 final class InitialRecipeSectionView: UIView {
-    
+
+    var didInsertDishName: ((_ text: String?) -> Void)?
+    var didInsertPortions: ((_ quantity: String?) -> Void)?
+    var didInsertDuration: ((_ time: String?) -> Void)?
+
     private let firstHorizontalStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
@@ -80,8 +84,15 @@ final class InitialRecipeSectionView: UIView {
     }
 
     private func setup() {
+        bindLayoutEvents()
         setupViewHierarchy()
         setupConstraints()
+    }
+
+    private func bindLayoutEvents() {
+        didInsertDishName?(dishTextField.text)
+        didInsertPortions?(portionTextField.text)
+        didInsertDuration?(cookingTimeTextField.text)
     }
 
     private func setupViewHierarchy() {
@@ -109,6 +120,10 @@ final class InitialRecipeSectionView: UIView {
             portionTextField.heightAnchor.constraint(equalToConstant: 30),
             cookingTimeTextField.heightAnchor.constraint(equalToConstant: 30)
         ])
+    }
+
+    func show(with model: Recipe) {
+        dishTextField.text
     }
 }
 

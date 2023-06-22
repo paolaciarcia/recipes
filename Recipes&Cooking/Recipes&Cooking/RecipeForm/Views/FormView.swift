@@ -9,10 +9,14 @@ import Foundation
 import UIKit
 
 final class FormView: UIView {
-    var isContinueButtonEnabled: Bool = false
+    var didInsertDishName: ((_ text: String?) -> Void)?
+    var didInsertPortions: ((_ quantity: String?) -> Void)?
+    var didInsertDuration: ((_ time: String?) -> Void)?
+    var didInsertIngridients: ((String) -> Void)?
+    var didInsertIInstructions: ((String) -> Void)?
+    var isButtonEnable: ((Bool) -> Void)?
 
     private let firstSectionView = InitialRecipeSectionView()
-
     private let verticalStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -30,7 +34,7 @@ final class FormView: UIView {
         let button = UIButton()
         button.setTitle("Adicionar imagem(opcional)", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.isEnabled = isContinueButtonEnabled
+        button.isEnabled = false
         button.addTarget(self, action: #selector(addImageHandler), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -42,7 +46,6 @@ final class FormView: UIView {
         button.setTitleColor(.black, for: .normal)
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 24
-        button.isEnabled = isContinueButtonEnabled
         button.addTarget(self, action: #selector(continueButtonHandler), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -65,8 +68,23 @@ final class FormView: UIView {
         ingridientsTextView.layer.cornerRadius = 8
         preparationMethodTextView.translatesAutoresizingMaskIntoConstraints = false
         preparationMethodTextView.layer.cornerRadius = 8
+        bindLayoutEvents()
         setupViewHierarchy()
         setupConstraints()
+    }
+
+    private func bindLayoutEvents() {
+        firstSectionView.didInsertDishName = { [weak self] name in
+            self?.didInsertDishName?(name)
+        }
+        firstSectionView.didInsertPortions = { [weak self] quantity in
+            self?.didInsertPortions?(quantity)
+        }
+        firstSectionView.didInsertDuration = { [weak self] time in
+            self?.didInsertDuration?(time)
+        }
+        didInsertIngridients?(ingridientsTextView.text)
+        didInsertIInstructions?(preparationMethodTextView.text)
     }
 
     private func setupViewHierarchy() {
@@ -83,7 +101,7 @@ final class FormView: UIView {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            firstSectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            firstSectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 12),
             firstSectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             firstSectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             verticalStackView.topAnchor.constraint(equalTo: firstSectionView.bottomAnchor, constant: 20),
@@ -103,6 +121,10 @@ final class FormView: UIView {
 
     @objc private func continueButtonHandler() {
         print("continuar")
+    }
+
+    func getRecipeInformations(from model: Recipe) {
+        continueButton.isEnabled = model.isButtonEnable
     }
 }
 

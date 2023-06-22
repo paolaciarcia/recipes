@@ -4,24 +4,26 @@ import Foundation
 import UIKit
 
 
-class Recipe {
+struct Recipe {
+    var name: String
+    var portions: Int
+    var timePrepare: Int
+    var ingredients: String
+    var instructions: String
+    var isButtonEnable: Bool
+
     var image : UIImage? {
         Recipe.loadImage(forRecipe: self)
     }
-    var name: String
-    var timePrepare: Int
-    var portions: Int
-    var ingredients: String
-    var instructions: String
-    
-    init(name: String, timePrepare: Int, portions: Int, ingredients: String, instructions: String, image: UIImage?) {
-        
-        self.name = name
-        self.timePrepare = timePrepare
-        self.portions = portions
-        self.ingredients = ingredients
-        self.instructions = instructions        
-    }
+
+//    init(name: String, timePrepare: Int, portions: Int, ingredients: String, instructions: String, image: UIImage?) {
+//        
+//        self.name = name
+//        self.timePrepare = timePrepare
+//        self.portions = portions
+//        self.ingredients = ingredients
+//        self.instructions = instructions        
+//    }
 
     
     func isValid() -> Bool {

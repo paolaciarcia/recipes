@@ -5,8 +5,15 @@ import PhotosUI
 import CoreData
 
 class FormViewController: UIViewController {
-    
-    let recipe = Recipe(name: "", timePrepare: 3, portions: 3, ingredients: "", instructions: "", image: UIImage())
+
+    var didInsertDishName: ((_ text: String?) -> Void)?
+    var didInsertPortions: ((_ quantity: String?) -> Void)?
+    var didInsertDuration: ((_ time: String?) -> Void)?
+    var didInsertIngridients: ((String) -> Void)?
+    var didInsertIInstructions: ((String) -> Void)?
+    var isButtonEnable: ((Bool) -> Void)?
+
+    var recipe = Recipe(name: "", portions: 3, timePrepare: 3, ingredients: "", instructions: "", isButtonEnable: false)
     private let contentView: FormView
 
 //    @IBOutlet weak var foodNameTextField: UITextField!
@@ -97,6 +104,8 @@ class FormViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Nova Receita"
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.tintColor = .black
 //        addFoodImageView.isUserInteractionEnabled = true
 //        NotificationCenter.default.addObserver(self, selector: #selector(updateRecipe), name: UIResponder.keyboardDidHideNotification, object: nil)
 //        ingredientsTextView.addDoneButton()
@@ -114,7 +123,36 @@ class FormViewController: UIViewController {
 //            recipe.portions = Int(portions) ?? 0
 //        }
 //    }
-    
+
+    private func updateRecipe() {
+        contentView.didInsertDishName = { [weak self] name in
+            guard let name = name else { return }
+            self?.recipe.name = name
+        }
+
+        contentView.didInsertPortions = { [weak self] quantity in
+            guard let quantity = quantity,
+                  let quantityPortions = Int(quantity) else { return }
+            self?.recipe.portions = quantityPortions
+        }
+
+        contentView.didInsertDuration = { [weak self] time in
+            guard let time = time,
+                  let duration = Int(time) else { return }
+            self?.recipe.timePrepare = duration
+        }
+
+        contentView.didInsertIngridients = { [weak self] ingridients in
+//            guard let ingridients = ingridients else { return }
+            self?.recipe.ingredients = ingridients
+        }
+
+        contentView.didInsertIInstructions = { [weak self] instructions in
+//            guard let instructions = instructions else { return }
+            self?.recipe.instructions = instructions
+        }
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "NovaReceita" {
