@@ -16,11 +16,6 @@ class FormViewController: UIViewController {
     var recipe = Recipe(name: "", portions: 3, timePrepare: 3, ingredients: "", instructions: "", isButtonEnable: false)
     private let contentView: FormView
 
-//    @IBOutlet weak var foodNameTextField: UITextField!
-//    @IBOutlet weak var servesTextField: UITextField!
-//    @IBOutlet weak var prepareTimeTextField: UITextField!
-//    @IBOutlet weak var ingredientsTextView: UITextView!
-//    @IBOutlet weak var instructionsTextView: UITextView!
 //    @IBOutlet weak var addFoodImageView: UIButton!
 //    @IBOutlet weak var navigationBar: UINavigationItem!
 //    @IBAction func generateRecipe(_ sender: Any) {
@@ -106,6 +101,7 @@ class FormViewController: UIViewController {
         title = "Nova Receita"
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.tintColor = .black
+        updateRecipe()
 //        addFoodImageView.isUserInteractionEnabled = true
 //        NotificationCenter.default.addObserver(self, selector: #selector(updateRecipe), name: UIResponder.keyboardDidHideNotification, object: nil)
 //        ingredientsTextView.addDoneButton()
@@ -151,20 +147,27 @@ class FormViewController: UIViewController {
 //            guard let instructions = instructions else { return }
             self?.recipe.instructions = instructions
         }
-    }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "NovaReceita" {
-
-            guard let detailViewController = segue.destination as? DetailViewController else {
-                return
-            }
-            
-            detailViewController.recipe = recipe
-            detailViewController.isNewRecipe = true
+        contentView.didTouchContinueButton = { [weak self] in
+            let viewController = DetailViewController()
+            viewController.recipe = self?.recipe
+            viewController.isNewRecipe = true
+            self?.navigationController?.pushViewController(viewController, animated: false)
         }
     }
+
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        
+//        if segue.identifier == "NovaReceita" {
+//
+//            guard let detailViewController = segue.destination as? DetailViewController else {
+//                return
+//            }
+//            
+//            detailViewController.recipe = recipe
+//            detailViewController.isNewRecipe = true
+//        }
+//    }
 }
 
 extension FormViewController: UITextFieldDelegate {

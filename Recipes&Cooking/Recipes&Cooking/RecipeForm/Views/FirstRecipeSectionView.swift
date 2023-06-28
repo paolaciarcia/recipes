@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class InitialRecipeSectionView: UIView {
+final class FirstRecipeSectionView: UIView {
 
     var didInsertDishName: ((_ text: String?) -> Void)?
     var didInsertPortions: ((_ quantity: String?) -> Void)?
@@ -122,12 +122,12 @@ final class InitialRecipeSectionView: UIView {
         ])
     }
 
-    func show(with model: Recipe) {
-        dishTextField.text
-    }
+//    func show(with model: Recipe) {
+//        dishTextField.text
+//    }
 }
 
 #Preview("InitialRecipeSectionView") {
-    let view = InitialRecipeSectionView()
+    let view = FirstRecipeSectionView()
     return view
 }

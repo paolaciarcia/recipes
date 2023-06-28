@@ -16,7 +16,9 @@ final class FormView: UIView {
     var didInsertIInstructions: ((String) -> Void)?
     var isButtonEnable: ((Bool) -> Void)?
 
-    private let firstSectionView = InitialRecipeSectionView()
+    var didTouchContinueButton: (() -> Void)?
+
+    private let firstSectionView = FirstRecipeSectionView()
     private let verticalStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -43,9 +45,9 @@ final class FormView: UIView {
     private lazy var continueButton: UIButton = {
         let button = UIButton()
         button.setTitle("CONTINUAR", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.layer.borderWidth = 2
-        button.layer.cornerRadius = 24
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = 18
         button.addTarget(self, action: #selector(continueButtonHandler), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -120,7 +122,7 @@ final class FormView: UIView {
     }
 
     @objc private func continueButtonHandler() {
-        print("continuar")
+        didTouchContinueButton?()
     }
 
     func getRecipeInformations(from model: Recipe) {
