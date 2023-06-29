@@ -5,16 +5,16 @@ import UIKit
 
 
 struct Recipe {
-    var name: String
-    var portions: Int
-    var timePrepare: Int
-    var ingredients: String
-    var instructions: String
-    var isButtonEnable: Bool
+    var name: String = ""
+    var portions: Int = 0
+    var timePrepare: Int = 0
+    var ingredients: String = ""
+    var instructions: String = ""
+    var isButtonEnable: Bool = true
 
-    var image : UIImage? {
-        Recipe.loadImage(forRecipe: self)
-    }
+    var image : UIImage? //{
+//        Recipe.loadImage(forRecipe: self)
+//    }
 
 //    init(name: String, timePrepare: Int, portions: Int, ingredients: String, instructions: String, image: UIImage?) {
 //        

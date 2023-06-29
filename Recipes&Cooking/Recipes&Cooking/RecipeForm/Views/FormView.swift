@@ -29,8 +29,8 @@ final class FormView: UIView {
 
     private let ingridientsLabel = DescritionLabel("Ingredientes:")
     private let preparationMethodLabel = DescritionLabel("Modo de preparo:")
-    private let ingridientsTextView = UITextView()
-    private let preparationMethodTextView = UITextView()
+    private lazy var ingridientsTextView = UITextView()
+    private lazy var preparationMethodTextView = UITextView()
 
     private lazy var addImageButton: UIButton = {
         let button = UIButton()
@@ -66,13 +66,20 @@ final class FormView: UIView {
     private func setup() {
         backgroundColor = .systemOrange
         firstSectionView.translatesAutoresizingMaskIntoConstraints = false
+        setupTextView()
+        bindLayoutEvents()
+        setupViewHierarchy()
+        setupConstraints()
+    }
+
+    private func setupTextView() {
         ingridientsTextView.translatesAutoresizingMaskIntoConstraints = false
         ingridientsTextView.layer.cornerRadius = 8
         preparationMethodTextView.translatesAutoresizingMaskIntoConstraints = false
         preparationMethodTextView.layer.cornerRadius = 8
-        bindLayoutEvents()
-        setupViewHierarchy()
-        setupConstraints()
+
+        ingridientsTextView.delegate = self
+        preparationMethodTextView.delegate = self
     }
 
     private func bindLayoutEvents() {
@@ -123,6 +130,7 @@ final class FormView: UIView {
 
     @objc private func continueButtonHandler() {
         didTouchContinueButton?()
+        bindLayoutEvents()
     }
 
     func getRecipeInformations(from model: Recipe) {
@@ -130,7 +138,8 @@ final class FormView: UIView {
     }
 }
 
-//#Preview("FormView") {
-//    let view = FormView()
-//    return view
-//}
+extension FormView: UITextViewDelegate {
+    func textViewDidEndEditing(_ textView: UITextView) {
+        textView.resignFirstResponder()
+    }
+}

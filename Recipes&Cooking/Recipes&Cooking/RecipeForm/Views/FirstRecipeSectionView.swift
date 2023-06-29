@@ -49,26 +49,29 @@ final class FirstRecipeSectionView: UIView {
     private let portionAmountLabel = DescritionLabel("Porções:")
     private let cookingTimeLabel = DescritionLabel("Tempo de preparo:")
 
-    private let dishTextField: UITextField = {
+    private lazy var dishTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .white
         textField.layer.cornerRadius = 8
+        textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
 
-    private let portionTextField: UITextField = {
+    private lazy var portionTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .white
         textField.layer.cornerRadius = 8
+        textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
 
-    private let cookingTimeTextField: UITextField = {
+    private lazy var cookingTimeTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .white
         textField.layer.cornerRadius = 8
+        textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -125,6 +128,19 @@ final class FirstRecipeSectionView: UIView {
 //    func show(with model: Recipe) {
 //        dishTextField.text
 //    }
+}
+
+extension FirstRecipeSectionView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        dishTextField.resignFirstResponder()
+        portionTextField.resignFirstResponder()
+        cookingTimeTextField.resignFirstResponder()
+        return true
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        endEditing(true)
+    }
 }
 
 #Preview("InitialRecipeSectionView") {

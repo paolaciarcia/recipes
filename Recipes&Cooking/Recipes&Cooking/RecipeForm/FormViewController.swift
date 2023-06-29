@@ -13,7 +13,7 @@ class FormViewController: UIViewController {
     var didInsertIInstructions: ((String) -> Void)?
     var isButtonEnable: ((Bool) -> Void)?
 
-    var recipe = Recipe(name: "", portions: 3, timePrepare: 3, ingredients: "", instructions: "", isButtonEnable: false)
+    var recipe: Recipe?
     private let contentView: FormView
 
 //    @IBOutlet weak var addFoodImageView: UIButton!
@@ -123,37 +123,40 @@ class FormViewController: UIViewController {
     private func updateRecipe() {
         contentView.didInsertDishName = { [weak self] name in
             guard let name = name else { return }
-            self?.recipe.name = name
+            self?.recipe?.name = name
         }
 
         contentView.didInsertPortions = { [weak self] quantity in
             guard let quantity = quantity,
                   let quantityPortions = Int(quantity) else { return }
-            self?.recipe.portions = quantityPortions
+            self?.recipe?.portions = quantityPortions
         }
 
         contentView.didInsertDuration = { [weak self] time in
             guard let time = time,
                   let duration = Int(time) else { return }
-            self?.recipe.timePrepare = duration
+            self?.recipe?.timePrepare = duration
         }
 
         contentView.didInsertIngridients = { [weak self] ingridients in
 //            guard let ingridients = ingridients else { return }
-            self?.recipe.ingredients = ingridients
+            self?.recipe?.ingredients = ingridients
         }
 
         contentView.didInsertIInstructions = { [weak self] instructions in
 //            guard let instructions = instructions else { return }
-            self?.recipe.instructions = instructions
+            self?.recipe?.instructions = instructions
         }
 
         contentView.didTouchContinueButton = { [weak self] in
-            let viewController = DetailViewController()
-            viewController.recipe = self?.recipe
-            viewController.isNewRecipe = true
-            self?.navigationController?.pushViewController(viewController, animated: false)
+            self?.setupNavigation()
         }
+    }
+
+    private func setupNavigation() {
+        let viewController = DetailViewController(recipe: recipe ?? Recipe())
+        viewController.isNewRecipe = true
+        navigationController?.pushViewController(viewController, animated: false)
     }
 
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -180,8 +183,9 @@ extension FormViewController: UITextFieldDelegate {
 extension FormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let selectedImage = info[.editedImage] as? UIImage else { return }
+        recipe?.image = selectedImage
 //        addFoodImageView.imageView?.image = selectedImage
-        Recipe.saveImage(selectedImage, forRecipe: recipe)
+        Recipe.saveImage(selectedImage, forRecipe: recipe ?? Recipe())
         dismiss(animated: true)
     }
 }
