@@ -8,7 +8,6 @@
 import UIKit
 
 final class FirstRecipeSectionView: UIView {
-
     var didInsertDishName: ((_ text: String?) -> Void)?
     var didInsertPortions: ((_ quantity: String?) -> Void)?
     var didInsertDuration: ((_ time: String?) -> Void)?
@@ -71,6 +70,7 @@ final class FirstRecipeSectionView: UIView {
         let textField = UITextField()
         textField.backgroundColor = .white
         textField.layer.cornerRadius = 8
+        textField.placeholder = "Ex: 60 min"
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -118,15 +118,15 @@ final class FirstRecipeSectionView: UIView {
             verticalStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             verticalStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             verticalStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-
             dishTextField.heightAnchor.constraint(equalToConstant: 30),
             portionTextField.heightAnchor.constraint(equalToConstant: 30),
             cookingTimeTextField.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
 
-//    func show(with model: Recipe) {
-//        dishTextField.text
+//    func show(viewModel: Recipe) {
+//        dishTextField.text = viewModel.name
+//        portionTextField.text = viewModel.portions
 //    }
 }
 
@@ -136,6 +136,12 @@ extension FirstRecipeSectionView: UITextFieldDelegate {
         portionTextField.resignFirstResponder()
         cookingTimeTextField.resignFirstResponder()
         return true
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        didInsertDishName?(dishTextField.text)
+        didInsertPortions?(portionTextField.text)
+        didInsertDuration?(cookingTimeTextField.text)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

@@ -12,7 +12,7 @@ class RecipesTableViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
 
-    private var recipe = [Recipe]()
+    private var recipe = [Recipe(name: "frango", portions: 3, timePrepare: "34 min", ingredients: "franog", instructions: "jvbknm.l", isButtonEnable: true)]
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -34,7 +34,6 @@ class RecipesTableViewController: UIViewController {
 
         title = "Receitas"
         navigationController?.navigationBar.prefersLargeTitles = true
-
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Voltar", style: .plain, target: nil, action: nil)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(createRecipe))
     }
@@ -80,9 +79,10 @@ extension RecipesTableViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RecipeCell.self), for: indexPath) as? RecipeCell else { fatalError("Could not create RecipeCell") }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RecipeCell.self), for: indexPath) as? RecipeCell else { return UITableViewCell() }
 
-        cell.prepareCell(recipe: recipe[indexPath.row])
+        let recipe = recipe[indexPath.row]
+        cell.prepareCell(recipe: recipe)
         return cell
     }
 }
@@ -93,7 +93,7 @@ extension RecipesTableViewController: UITableViewDataSource {
 
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             let recipes = recipe[indexPath.row]
-            guard let recipeViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController else { return }
+            let recipeViewController = DetailViewController(recipe: recipes)
 
             recipeViewController.recipe = recipes
             navigationController?.show(recipeViewController, sender: recipes)

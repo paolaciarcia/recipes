@@ -44,11 +44,11 @@ final class FormView: UIView {
 
     private lazy var continueButton: UIButton = {
         let button = UIButton()
-        button.setTitle("CONTINUAR", for: .normal)
+        button.setTitle("SALVAR", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 18
-        button.addTarget(self, action: #selector(continueButtonHandler), for: .touchUpInside)
+        button.addTarget(self, action: #selector(saveRecipe), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -128,18 +128,24 @@ final class FormView: UIView {
         print("buscar imagem")
     }
 
-    @objc private func continueButtonHandler() {
+    @objc private func saveRecipe() {
         didTouchContinueButton?()
-        bindLayoutEvents()
     }
 
-    func getRecipeInformations(from model: Recipe) {
+    private func getRecipeInformations(from model: Recipe) {
         continueButton.isEnabled = model.isButtonEnable
+    }
+
+    func show(viewModel: Recipe) {
+//        ingridientsTextView.text = viewModel.ingredients
     }
 }
 
 extension FormView: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
+        didInsertIngridients?(ingridientsTextView.text)
+        didInsertIInstructions?(preparationMethodTextView.text)
+
         textView.resignFirstResponder()
     }
 }

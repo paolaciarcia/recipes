@@ -41,7 +41,29 @@ class FormViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
 
     }
-    
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func loadView() {
+        view = contentView
+    }
+
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Nova Receita"
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.tintColor = .black
+        updateRecipe()
+        //        addFoodImageView.isUserInteractionEnabled = true
+        //        NotificationCenter.default.addObserver(self, selector: #selector(updateRecipe), name: UIResponder.keyboardDidHideNotification, object: nil)
+        //        ingredientsTextView.addDoneButton()
+        //        instructionsTextView.addDoneButton()
+    }
+
     @IBAction func updateImage() {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
@@ -86,39 +108,7 @@ class FormViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
-    override func loadView() {
-        view = contentView
-    }
-
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "Nova Receita"
-        navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.tintColor = .black
-        updateRecipe()
-//        addFoodImageView.isUserInteractionEnabled = true
-//        NotificationCenter.default.addObserver(self, selector: #selector(updateRecipe), name: UIResponder.keyboardDidHideNotification, object: nil)
-//        ingredientsTextView.addDoneButton()
-//        instructionsTextView.addDoneButton()
-    }
-    
-//    @objc func updateRecipe() {
-//        recipe.name = foodNameTextField.text ?? ""
-//        recipe.ingredients = ingredientsTextView.text ?? ""
-//        recipe.instructions = instructionsTextView.text ?? ""
-//
-//        if let time = prepareTimeTextField.text,
-//           let portions = servesTextField.text {
-//            recipe.timePrepare = Int(time) ?? 0
-//            recipe.portions = Int(portions) ?? 0
-//        }
-//    }
 
     private func updateRecipe() {
         contentView.didInsertDishName = { [weak self] name in
@@ -133,9 +123,8 @@ class FormViewController: UIViewController {
         }
 
         contentView.didInsertDuration = { [weak self] time in
-            guard let time = time,
-                  let duration = Int(time) else { return }
-            self?.recipe?.timePrepare = duration
+            guard let time = time else { return }
+            self?.recipe?.timePrepare = time
         }
 
         contentView.didInsertIngridients = { [weak self] ingridients in
@@ -149,28 +138,15 @@ class FormViewController: UIViewController {
         }
 
         contentView.didTouchContinueButton = { [weak self] in
-            self?.setupNavigation()
+            NotificationCenter.default.post(name: .RecipeSaved, object: self?.recipe)
+            self?.navigationController?.popViewController(animated: true)
+//            self?.setupNavigation()
         }
     }
+}
 
-    private func setupNavigation() {
-        let viewController = DetailViewController(recipe: recipe ?? Recipe())
-        viewController.isNewRecipe = true
-        navigationController?.pushViewController(viewController, animated: false)
-    }
-
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        
-//        if segue.identifier == "NovaReceita" {
-//
-//            guard let detailViewController = segue.destination as? DetailViewController else {
-//                return
-//            }
-//            
-//            detailViewController.recipe = recipe
-//            detailViewController.isNewRecipe = true
-//        }
-//    }
+extension Notification.Name {
+    static let RecipeSaved = Notification.Name("SaveRecipe")
 }
 
 extension FormViewController: UITextFieldDelegate {
@@ -183,7 +159,7 @@ extension FormViewController: UITextFieldDelegate {
 extension FormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let selectedImage = info[.editedImage] as? UIImage else { return }
-        recipe?.image = selectedImage
+//        recipe?.image = selectedImage
 //        addFoodImageView.imageView?.image = selectedImage
         Recipe.saveImage(selectedImage, forRecipe: recipe ?? Recipe())
         dismiss(animated: true)

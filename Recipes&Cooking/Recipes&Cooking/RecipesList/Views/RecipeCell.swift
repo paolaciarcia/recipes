@@ -7,12 +7,11 @@
 
 import UIKit
 
-class RecipeCell: UITableViewCell {
+final class RecipeCell: UITableViewCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 22,
-                                            weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 22, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -20,8 +19,7 @@ class RecipeCell: UITableViewCell {
     private let portionsLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.secondaryLabel
-        label.font = UIFont.systemFont(ofSize: 13,
-                                               weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -29,8 +27,7 @@ class RecipeCell: UITableViewCell {
     private let time: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.secondaryLabel
-        label.font = UIFont.systemFont(ofSize: 13,
-                                       weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -39,9 +36,11 @@ class RecipeCell: UITableViewCell {
         let image = UIImageView()
         image.layer.cornerRadius = 10
         image.tintColor = UIColor.secondarySystemFill
-        image.contentMode = .scaleAspectFit
+//        image.contentMode = .scaleAspectFit
+        image.image = UIImage(named: "defaultImage")
         image.layer.borderWidth = 8
         image.layer.borderColor = CGColor(gray: 50, alpha: 1)
+        image.clipsToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -71,23 +70,27 @@ class RecipeCell: UITableViewCell {
     }
 
     private func setupViewHierarchy() {
-        addSubview(image)
-        stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(portionsLabel)
-        stackView.addArrangedSubview(time)
-        addSubview(stackView)
+        contentView.addSubview(image)
+//        stackView.addArrangedSubview(titleLabel)
+//        stackView.addArrangedSubview(portionsLabel)
+//        stackView.addArrangedSubview(time)
+//        addSubview(stackView)
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            image.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
             image.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            image.heightAnchor.constraint(equalToConstant: 100),
-            image.widthAnchor.constraint(equalToConstant: 100),
+//            image.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+//            image.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: 20),
+            image.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+//            image.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            image.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8),
 
-            stackView.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 8),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
-            stackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            image.widthAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8)
+
+//            stackView.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 8),
+//            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+//            stackView.centerXAnchor.constraint(equalTo: image.centerXAnchor),
         ])
     }
 
@@ -107,14 +110,13 @@ class RecipeCell: UITableViewCell {
     }
 }
 
-//#Preview("RecipeCell") {
-//    let view = RecipeCell()
+#Preview("RecipeCell") {
+    let view = RecipeCell()
 //    view.prepareCell(recipe: Recipe(name: "Frango",
-//                                    timePrepare: 12,
 //                                    portions: 2,
+//                                    timePrepare: "12 min",
 //                                    ingredients: "Frango, sal",
-//                                    instructions: "Modo de preparo",
-//                                    image: UIImage(systemName: "b.square.fill")))
+//                                    instructions: "Modo de preparo"))
 //    view.backgroundColor = .brown
-//    return view
-//}
+    return view
+}

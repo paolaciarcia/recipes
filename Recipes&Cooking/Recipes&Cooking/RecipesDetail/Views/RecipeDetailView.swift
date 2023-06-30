@@ -30,7 +30,6 @@ final class RecipeDetailView: UIView {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Frango gratinado é muito gosto eu amo comer frango"
         label.font = UIFont.preferredFont(forTextStyle: .title1)
         label.textColor = UIColor.orange
         label.numberOfLines = 0
@@ -40,7 +39,6 @@ final class RecipeDetailView: UIView {
 
     private let timeDescriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Preparo: 120 min"
         label.font = UIFont.preferredFont(forTextStyle: .headline)
         label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +47,6 @@ final class RecipeDetailView: UIView {
 
     private let portionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Porções: 2"
         label.font = UIFont.preferredFont(forTextStyle: .headline)
         label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -131,6 +128,15 @@ final class RecipeDetailView: UIView {
             mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
 //            mainStackView.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor, constant: -20)
         ])
+    }
+
+    func show(viewModel: Recipe) {
+        imageView.image = viewModel.image
+        titleLabel.text = viewModel.name
+        timeDescriptionLabel.text = "Preparo: \(viewModel.timePrepare)"
+        portionLabel.text = "Porções: \(viewModel.portions)"
+        ingridientsDescriptionLabel.text = viewModel.ingredients
+        instructionsDescriptionLabel.text = viewModel.instructions
     }
 }
 
