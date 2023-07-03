@@ -12,6 +12,7 @@ final class RecipeCell: UITableViewCell {
         let label = UILabel()
         label.textColor = UIColor.black
         label.font = UIFont.systemFont(ofSize: 22, weight: .regular)
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -34,12 +35,10 @@ final class RecipeCell: UITableViewCell {
 
     private let image: UIImageView = {
         let image = UIImageView()
-        image.layer.cornerRadius = 10
-        image.tintColor = UIColor.secondarySystemFill
-//        image.contentMode = .scaleAspectFit
-        image.image = UIImage(named: "defaultImage")
-        image.layer.borderWidth = 8
-        image.layer.borderColor = CGColor(gray: 50, alpha: 1)
+        image.contentMode = .scaleAspectFill
+        image.image = UIImage(named: "imageTest")
+        image.layer.borderColor = UIColor.black.cgColor
+        image.layer.borderWidth = 2
         image.clipsToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
@@ -70,27 +69,22 @@ final class RecipeCell: UITableViewCell {
     }
 
     private func setupViewHierarchy() {
-        contentView.addSubview(image)
-//        stackView.addArrangedSubview(titleLabel)
-//        stackView.addArrangedSubview(portionsLabel)
-//        stackView.addArrangedSubview(time)
-//        addSubview(stackView)
+        addSubview(image)
+        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(portionsLabel)
+        stackView.addArrangedSubview(time)
+        addSubview(stackView)
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            image.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-//            image.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-//            image.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: 20),
-            image.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-//            image.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            image.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8),
-
-            image.widthAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8)
-
-//            stackView.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 8),
-//            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
-//            stackView.centerXAnchor.constraint(equalTo: image.centerXAnchor),
+            image.centerYAnchor.constraint(equalTo: centerYAnchor),
+            image.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
+            image.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.8),
+            image.widthAnchor.constraint(equalTo: heightAnchor, multiplier: 0.8),
+            stackView.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 8),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
+            stackView.centerYAnchor.constraint(equalTo: image.centerYAnchor)
         ])
     }
 

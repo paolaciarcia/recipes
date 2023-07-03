@@ -12,10 +12,10 @@ class RecipesTableViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
 
-    private var recipe = [Recipe(name: "frango", portions: 3, timePrepare: "34 min", ingredients: "franog", instructions: "jvbknm.l", isButtonEnable: true)]
+    private var recipe = [Recipe(name: "Frango UITableViewCell UITableViewCell", portions: 3, timePrepare: "34 min", ingredients: "franog", instructions: "jvbknm.l", isButtonEnable: true, image: UIImage(named: "imageTest"))]
 
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
@@ -26,6 +26,7 @@ class RecipesTableViewController: UIViewController {
     private var emptyView = EmptyListView()
 
     override func loadView() {
+//        view = emptyView
         checkEmptyList()
     }
 
@@ -104,6 +105,12 @@ extension RecipesTableViewController: UITableViewDataSource {
 
             let indexPaths = [indexPath]
             tableView.deleteRows(at: indexPaths, with: .automatic)
+        }
+
+        func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+            let height = UIScreen.main.bounds.height
+//            let width = UIScreen.main.bounds.width
+            return height * 0.15
         }
     }
 

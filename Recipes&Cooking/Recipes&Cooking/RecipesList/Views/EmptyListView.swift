@@ -44,7 +44,7 @@ final class EmptyListView: UIView {
             messageLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             messageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            messageLabel.centerXAnchor.constraint(equalTo: centerXAnchor, constant: -20)
+            messageLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
         ])
     }
 }
