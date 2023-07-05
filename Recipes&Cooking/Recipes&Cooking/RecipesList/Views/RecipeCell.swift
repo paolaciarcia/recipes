@@ -38,6 +38,7 @@ final class RecipeCell: UITableViewCell {
         image.contentMode = .scaleAspectFill
         image.layer.borderColor = UIColor.black.cgColor
         image.layer.borderWidth = 2
+        image.layer.cornerRadius = 6
         image.clipsToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
         return image

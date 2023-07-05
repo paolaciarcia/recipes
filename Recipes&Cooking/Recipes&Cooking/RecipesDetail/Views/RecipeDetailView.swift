@@ -8,12 +8,10 @@
 import UIKit
 
 final class RecipeDetailView: UIView {
-    private let imageView: UIImageView = {
-        let image = UIImageView()
-        image.layer.borderWidth = 4
-        image.clipsToBounds = true
-        image.translatesAutoresizingMaskIntoConstraints = false
-        return image
+    private let scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        return scroll
     }()
 
     private let mainStackView: UIStackView = {
@@ -23,6 +21,14 @@ final class RecipeDetailView: UIView {
         stack.alignment = .leading
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
+    }()
+
+    private let imageView: UIImageView = {
+        let image = UIImageView()
+        image.layer.borderWidth = 4
+        image.clipsToBounds = true
+        image.translatesAutoresizingMaskIntoConstraints = false
+        return image
     }()
 
     private let titleLabel: UILabel = {
@@ -103,7 +109,10 @@ final class RecipeDetailView: UIView {
     }
 
     private func setupViewHierarchy() {
-        addSubview(imageView)
+        addSubview(scrollView)
+
+        scrollView.addSubview(imageView)
+        scrollView.addSubview(mainStackView)
         mainStackView.addArrangedSubview(titleLabel)
         mainStackView.addArrangedSubview(timeDescriptionLabel)
         mainStackView.addArrangedSubview(portionLabel)
@@ -111,20 +120,25 @@ final class RecipeDetailView: UIView {
         mainStackView.addArrangedSubview(ingridientsDescriptionLabel)
         mainStackView.addArrangedSubview(instructionsTitleLabel)
         mainStackView.addArrangedSubview(instructionsDescriptionLabel)
-
-        addSubview(mainStackView)
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+            imageView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             imageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.4),
             imageView.widthAnchor.constraint(equalTo: widthAnchor),
+
             mainStackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
-            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
+            mainStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
+            mainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
+            mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -20)
         ])
     }
 
