@@ -9,7 +9,7 @@ class RecipesTableViewController: UIViewController {
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.selectionFollowsFocus = false
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(RecipeCell.self, forCellReuseIdentifier: String(describing: RecipeCell.self))
@@ -84,13 +84,22 @@ extension RecipesTableViewController: UITableViewDataSource {
         // MARK: - UITableViewDelegate
 
     extension RecipesTableViewController: UITableViewDelegate {
+        private func setupCellLayout(indexPath: IndexPath) {
+            let cell = tableView.cellForRow(at: indexPath)
+            cell?.selectionStyle = .gray
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                cell?.selectionStyle = .none
+            }
+        }
 
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            setupCellLayout(indexPath: indexPath)
             let recipes = recipes[indexPath.row]
             let recipeViewController = DetailViewController(recipe: recipes)
 
             recipeViewController.recipe = recipes
-            navigationController?.show(recipeViewController, sender: recipes)
+            self.navigationController?.show(recipeViewController, sender: recipes)
         }
 
         func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

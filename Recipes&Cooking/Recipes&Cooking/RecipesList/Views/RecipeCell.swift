@@ -63,6 +63,7 @@ final class RecipeCell: UITableViewCell {
     }
 
     private func setupCell() {
+        selectionStyle = .none
         setupViewHierarchy()
         setupConstraints()
     }

@@ -36,7 +36,6 @@ final class FormViewController: UIViewController {
         view = contentView
     }
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Nova Receita"
