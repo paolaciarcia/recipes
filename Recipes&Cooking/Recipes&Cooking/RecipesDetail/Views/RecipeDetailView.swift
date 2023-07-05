@@ -63,7 +63,7 @@ final class RecipeDetailView: UIView {
 
     private let ingridientsDescriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: .caption1)
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -80,7 +80,7 @@ final class RecipeDetailView: UIView {
 
     private let instructionsDescriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: .caption1)
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -125,17 +125,32 @@ final class RecipeDetailView: UIView {
             mainStackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
             mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
-//            mainStackView.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor, constant: -20)
         ])
     }
 
     func show(viewModel: Recipe) {
         imageView.image = viewModel.image
         titleLabel.text = viewModel.name
-        timeDescriptionLabel.text = "Preparo: \(viewModel.timePrepare)"
-        portionLabel.text = "Porções: \(viewModel.portions)"
+        setAttributedText(with: "Preparo: \(viewModel.timePrepare)",
+                          range: viewModel.timePrepare,
+                          label: timeDescriptionLabel)
+
+        setAttributedText(with: "Porções: \(viewModel.portions)",
+                          range: "\(viewModel.portions)",
+                          label: portionLabel)
         ingridientsDescriptionLabel.text = viewModel.ingredients
         instructionsDescriptionLabel.text = viewModel.instructions
+    }
+
+    private func setAttributedText(with string: String,
+                                   range: String,
+                                   label: UILabel) {
+        let attributedString = NSMutableAttributedString(string: string)
+        let range = (string as NSString).range(of: range)
+        attributedString.addAttribute(.font,
+                                      value: UIFont.preferredFont(forTextStyle: .body),
+                                      range: range)
+        label.attributedText = attributedString
     }
 }
 
