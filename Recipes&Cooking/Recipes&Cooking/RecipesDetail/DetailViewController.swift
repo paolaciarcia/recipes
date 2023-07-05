@@ -28,12 +28,6 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         contentView.show(viewModel: recipe)
-//        foodImageView.image = recipe?.image
-//        foodNameLabel.text = recipe?.name
-//        prepareTimeLabel.text = "\(String(describing: recipe!.timePrepare))"
-//        servesLabel.text = "\(String(describing: recipe!.portions))"
-//        ingredientsTextView.text = recipe?.ingredients
-//        instructionsTextView.text = recipe?.instructions
-
+        navigationController?.navigationBar.prefersLargeTitles = false
     }
 }

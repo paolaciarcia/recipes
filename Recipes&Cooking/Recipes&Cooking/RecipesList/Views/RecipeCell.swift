@@ -36,7 +36,6 @@ final class RecipeCell: UITableViewCell {
     private let image: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
-        image.image = UIImage(named: "imageTest")
         image.layer.borderColor = UIColor.black.cgColor
         image.layer.borderWidth = 2
         image.clipsToBounds = true

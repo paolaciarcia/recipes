@@ -22,7 +22,6 @@ final class RecipeDetailView: UIView {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 18
-        stack.backgroundColor = .yellow
         stack.alignment = .leading
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack

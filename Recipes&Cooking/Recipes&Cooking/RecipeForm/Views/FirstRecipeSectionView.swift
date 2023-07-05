@@ -124,7 +124,7 @@ final class FirstRecipeSectionView: UIView {
         ])
     }
 
-//    func show(viewModel: Recipe) {
+//    func show() -> Recipe {
 //        dishTextField.text = viewModel.name
 //        portionTextField.text = viewModel.portions
 //    }

@@ -2,17 +2,10 @@
 
 import UIKit
 
+
 class RecipesTableViewController: UIViewController {
-
-    init() {
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
-    private var recipe = [Recipe(name: "Frango UITableViewCell UITableViewCell", portions: 3, timePrepare: "34 min", ingredients: "franog", instructions: "jvbknm.l", isButtonEnable: true, image: UIImage(named: "imageTest"))]
+    private var recipes = [Recipe]()
+    private var emptyView = EmptyListView()
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
@@ -23,26 +16,8 @@ class RecipesTableViewController: UIViewController {
         return tableView
     }()
 
-    private var emptyView = EmptyListView()
-
-    override func loadView() {
-//        view = emptyView
-        checkEmptyList()
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        title = "Receitas"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Voltar", style: .plain, target: nil, action: nil)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(createRecipe))
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateRecipeList(notification:)), name: .RecipeSaved, object: nil)
-        tableView.reloadData()
+    init() {
+        super.init(nibName: nil, bundle: nil)
     }
 
     @available(*, unavailable)
@@ -50,50 +25,68 @@ class RecipesTableViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc func updateRecipeList(notification: Notification) {
-        guard let recipes = notification.object as? Recipe else {
-            return
-        }
-        recipe.append(recipes)
-        tableView.reloadData()
+    override func loadView() {
+        view = emptyView
+
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Receitas"
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Voltar", style: .plain, target: nil, action: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(createRecipe))
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     @objc func createRecipe() {
-        let viewController = FormViewController()
-        self.navigationController?.pushViewController(viewController, animated: true)
+        let formController = FormViewController()
+        formController.delegate = self
+        self.navigationController?.pushViewController(formController, animated: true)
     }
 
     private func checkEmptyList() {
-        if recipe.isEmpty {
+        if recipes.isEmpty {
             view = emptyView
         } else {
             view = tableView
         }
     }
 }
-    
-    // MARK: - Table view data source
+
+extension RecipesTableViewController: FormViewControllerDelegate {
+    func didSaveRecipe(recipe: Recipe) {
+        recipes.append(recipe)
+        tableView.reloadData()
+        checkEmptyList()
+    }
+}
+
+    // MARK: - UITableViewDataSource
 
 extension RecipesTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        recipe.count
+        recipes.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RecipeCell.self), for: indexPath) as? RecipeCell else { return UITableViewCell() }
 
-        let recipe = recipe[indexPath.row]
+        let recipe = recipes[indexPath.row]
         cell.prepareCell(recipe: recipe)
         return cell
     }
 }
 
-        // MARK: - Table view Delegate
+        // MARK: - UITableViewDelegate
 
     extension RecipesTableViewController: UITableViewDelegate {
 
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            let recipes = recipe[indexPath.row]
+            let recipes = recipes[indexPath.row]
             let recipeViewController = DetailViewController(recipe: recipes)
 
             recipeViewController.recipe = recipes
@@ -101,7 +94,7 @@ extension RecipesTableViewController: UITableViewDataSource {
         }
 
         func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-            recipe.remove(at: indexPath.row)
+            recipes.remove(at: indexPath.row)
 
             let indexPaths = [indexPath]
             tableView.deleteRows(at: indexPaths, with: .automatic)
@@ -109,7 +102,6 @@ extension RecipesTableViewController: UITableViewDataSource {
 
         func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
             let height = UIScreen.main.bounds.height
-//            let width = UIScreen.main.bounds.width
             return height * 0.15
         }
     }

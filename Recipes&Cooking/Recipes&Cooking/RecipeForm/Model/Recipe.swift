@@ -5,13 +5,13 @@ import UIKit
 
 
 struct Recipe {
-    var name: String = "frango"
+    var name: String = ""
     var portions: Int = 0
-    var timePrepare: String = "12"
-    var ingredients: String = "dclr"
-    var instructions: String = "lrncornco"
+    var timePrepare: String = ""
+    var ingredients: String = ""
+    var instructions: String = ""
     var isButtonEnable: Bool = true
-    var image: UIImage?
+    var image: UIImage? = UIImage(named: "imageTest")
 //    var image: UIImage? {
 //       Recipe.loadImage(forRecipe: self)
 //    }
@@ -48,9 +48,3 @@ extension FileManager {
     return `default`.urls(for: .documentDirectory, in: .userDomainMask)[0]
   }
 }
-
-
-
-
-
-

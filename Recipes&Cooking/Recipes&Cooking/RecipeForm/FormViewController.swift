@@ -4,42 +4,27 @@ import UIKit
 import PhotosUI
 import CoreData
 
-class FormViewController: UIViewController {
+protocol FormViewControllerDelegate: AnyObject {
+    func didSaveRecipe(recipe: Recipe)
+}
 
+final class FormViewController: UIViewController {
     var didInsertDishName: ((_ text: String?) -> Void)?
     var didInsertPortions: ((_ quantity: String?) -> Void)?
     var didInsertDuration: ((_ time: String?) -> Void)?
     var didInsertIngridients: ((String) -> Void)?
     var didInsertIInstructions: ((String) -> Void)?
     var isButtonEnable: ((Bool) -> Void)?
+    var didTouchContinueButton: (() -> Void)?
 
-    var recipe: Recipe?
+    weak var delegate: FormViewControllerDelegate?
+
     private let contentView: FormView
-
-//    @IBOutlet weak var addFoodImageView: UIButton!
-//    @IBOutlet weak var navigationBar: UINavigationItem!
-//    @IBAction func generateRecipe(_ sender: Any) {
-//        updateRecipe()
-//        if recipe.isValid() {
-//            performSegue(withIdentifier: "NovaReceita", sender: nil)
-//        } else {
-//            let alert = UIAlertController(title: "Receita inválida!", message: "Por favor, preencha todos os campos", preferredStyle: .alert)
-//            let action = UIAlertAction(title: "OK", style: .default, handler: { action in
-//                
-//            })
-//            alert.addAction(action)
-//            present(alert, animated: true)
-//        }
-//    }
+    private var recipe = Recipe()
 
     init(contentView: FormView = FormView()) {
         self.contentView = contentView
         super.init(nibName: nil, bundle: nil)
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-
     }
 
     @available(*, unavailable)
@@ -57,11 +42,39 @@ class FormViewController: UIViewController {
         title = "Nova Receita"
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.tintColor = .black
-        updateRecipe()
-        //        addFoodImageView.isUserInteractionEnabled = true
-        //        NotificationCenter.default.addObserver(self, selector: #selector(updateRecipe), name: UIResponder.keyboardDidHideNotification, object: nil)
-        //        ingredientsTextView.addDoneButton()
-        //        instructionsTextView.addDoneButton()
+        bindLayoutEvents()
+    }
+
+    private func bindLayoutEvents() {
+        contentView.didInsertDishName = { [weak self] name in
+            guard let name = name else { return }
+            self?.recipe.name = name
+        }
+
+        contentView.didInsertPortions = { [weak self] quantity in
+            guard let quantity = quantity,
+                  let quantityPortions = Int(quantity) else { return }
+            self?.recipe.portions = quantityPortions
+        }
+
+        contentView.didInsertDuration = { [weak self] time in
+            guard let time = time else { return }
+            self?.recipe.timePrepare = time
+        }
+
+        contentView.didInsertIngridients = { [weak self] ingridients in
+            self?.recipe.ingredients = ingridients
+        }
+
+        contentView.didInsertIInstructions = { [weak self] instructions in
+            self?.recipe.instructions = instructions
+        }
+
+        contentView.didTouchContinueButton = { [weak self] in
+            guard let self else { return }
+            self.delegate?.didSaveRecipe(recipe: self.recipe)
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 
     @IBAction func updateImage() {
@@ -74,7 +87,7 @@ class FormViewController: UIViewController {
             message: nil,
             preferredStyle: .actionSheet
         )
-        
+
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             alertController.addAction(
                 UIAlertAction(
@@ -87,7 +100,7 @@ class FormViewController: UIViewController {
                 )
             )
         }
-        
+
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             alertController.addAction(
                 UIAlertAction(
@@ -100,59 +113,12 @@ class FormViewController: UIViewController {
                 )
             )
         }
-        
+
         alertController.addAction(
             UIAlertAction(title: "Cancelar",style: .destructive,handler: nil)
         )
-        
+
         present(alertController, animated: true, completion: nil)
-    }
-
-
-
-    private func updateRecipe() {
-        contentView.didInsertDishName = { [weak self] name in
-            guard let name = name else { return }
-            self?.recipe?.name = name
-        }
-
-        contentView.didInsertPortions = { [weak self] quantity in
-            guard let quantity = quantity,
-                  let quantityPortions = Int(quantity) else { return }
-            self?.recipe?.portions = quantityPortions
-        }
-
-        contentView.didInsertDuration = { [weak self] time in
-            guard let time = time else { return }
-            self?.recipe?.timePrepare = time
-        }
-
-        contentView.didInsertIngridients = { [weak self] ingridients in
-//            guard let ingridients = ingridients else { return }
-            self?.recipe?.ingredients = ingridients
-        }
-
-        contentView.didInsertIInstructions = { [weak self] instructions in
-//            guard let instructions = instructions else { return }
-            self?.recipe?.instructions = instructions
-        }
-
-        contentView.didTouchContinueButton = { [weak self] in
-            NotificationCenter.default.post(name: .RecipeSaved, object: self?.recipe)
-            self?.navigationController?.popViewController(animated: true)
-//            self?.setupNavigation()
-        }
-    }
-}
-
-extension Notification.Name {
-    static let RecipeSaved = Notification.Name("SaveRecipe")
-}
-
-extension FormViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
     }
 }
 
@@ -161,14 +127,8 @@ extension FormViewController: UIImagePickerControllerDelegate, UINavigationContr
         guard let selectedImage = info[.editedImage] as? UIImage else { return }
 //        recipe?.image = selectedImage
 //        addFoodImageView.imageView?.image = selectedImage
-        Recipe.saveImage(selectedImage, forRecipe: recipe ?? Recipe())
+//        Recipe.saveImage(selectedImage, forRecipe: recipe ?? Recipe())
         dismiss(animated: true)
-    }
-}
-
-extension DetailViewController: UITextViewDelegate {
-    func textViewDidEndEditing(_ textView: UITextView) {
-        textView.resignFirstResponder()
     }
 }
 

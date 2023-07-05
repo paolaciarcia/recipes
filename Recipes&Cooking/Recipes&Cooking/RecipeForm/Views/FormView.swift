@@ -8,13 +8,18 @@
 import Foundation
 import UIKit
 
+protocol FormViewType: UIView {
+    var didTouchContinueButton: (() -> Void)? { get set }
+    func showRecipe() -> Recipe
+}
+
 final class FormView: UIView {
     var didInsertDishName: ((_ text: String?) -> Void)?
     var didInsertPortions: ((_ quantity: String?) -> Void)?
     var didInsertDuration: ((_ time: String?) -> Void)?
     var didInsertIngridients: ((String) -> Void)?
     var didInsertIInstructions: ((String) -> Void)?
-    var isButtonEnable: ((Bool) -> Void)?
+//    var isButtonEnable: ((Bool) -> Void)?
 
     var didTouchContinueButton: (() -> Void)?
 
@@ -105,7 +110,6 @@ final class FormView: UIView {
         verticalStackView.addArrangedSubview(preparationMethodTextView)
         verticalStackView.addArrangedSubview(addImageButton)
         verticalStackView.addArrangedSubview(continueButton)
-
     }
 
     private func setupConstraints() {
@@ -136,9 +140,10 @@ final class FormView: UIView {
         continueButton.isEnabled = model.isButtonEnable
     }
 
-    func show(viewModel: Recipe) {
-//        ingridientsTextView.text = viewModel.ingredients
-    }
+//    func show() -> Recipe {
+////        ingridientsTextView.text = viewModel.ingredients
+//        return Recipe(name: name
+//    }
 }
 
 extension FormView: UITextViewDelegate {
