@@ -167,9 +167,3 @@ final class RecipeDetailView: UIView {
         label.attributedText = attributedString
     }
 }
-
-#Preview("RecipeDetailView") {
-    let view = RecipeDetailView()
-    return view
-}
-

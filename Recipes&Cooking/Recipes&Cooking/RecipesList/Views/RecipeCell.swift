@@ -104,14 +104,3 @@ final class RecipeCell: UITableViewCell {
         image.image = recipe.image
     }
 }
-
-#Preview("RecipeCell") {
-    let view = RecipeCell()
-//    view.prepareCell(recipe: Recipe(name: "Frango",
-//                                    portions: 2,
-//                                    timePrepare: "12 min",
-//                                    ingredients: "Frango, sal",
-//                                    instructions: "Modo de preparo"))
-//    view.backgroundColor = .brown
-    return view
-}

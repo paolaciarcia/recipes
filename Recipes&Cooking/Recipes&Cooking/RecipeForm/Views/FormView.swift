@@ -19,6 +19,13 @@ final class FormView: UIView {
     var didTouchContinueButton: (() -> Void)?
 
     private let firstSectionView = FirstRecipeSectionView()
+
+    private let scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        return scroll
+    }()
+
     private let verticalStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -26,6 +33,8 @@ final class FormView: UIView {
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
+
+    private let spacingView = UIView()
 
     private let ingridientsLabel = DescritionLabel("Ingredientes:")
     private let preparationMethodLabel = DescritionLabel("Modo de preparo:")
@@ -65,6 +74,7 @@ final class FormView: UIView {
     private func setup() {
         backgroundColor = .systemOrange
         firstSectionView.translatesAutoresizingMaskIntoConstraints = false
+        spacingView.translatesAutoresizingMaskIntoConstraints = false
         setupTextView()
         bindLayoutEvents()
         setupViewHierarchy()
@@ -74,8 +84,10 @@ final class FormView: UIView {
     private func setupTextView() {
         ingridientsTextView.translatesAutoresizingMaskIntoConstraints = false
         ingridientsTextView.layer.cornerRadius = 8
+        ingridientsTextView.addDoneButton()
         preparationMethodTextView.translatesAutoresizingMaskIntoConstraints = false
         preparationMethodTextView.layer.cornerRadius = 8
+        preparationMethodTextView.addDoneButton()
 
         ingridientsTextView.delegate = self
         preparationMethodTextView.delegate = self
@@ -96,28 +108,36 @@ final class FormView: UIView {
     }
 
     private func setupViewHierarchy() {
-        addSubview(firstSectionView)
-        addSubview(verticalStackView)
+        addSubview(scrollView)
+        scrollView.addSubview(firstSectionView)
+        scrollView.addSubview(verticalStackView)
         verticalStackView.addArrangedSubview(ingridientsLabel)
         verticalStackView.addArrangedSubview(ingridientsTextView)
         verticalStackView.addArrangedSubview(preparationMethodLabel)
         verticalStackView.addArrangedSubview(preparationMethodTextView)
         verticalStackView.addArrangedSubview(addImageButton)
+        verticalStackView.addArrangedSubview(spacingView)
         verticalStackView.addArrangedSubview(continueButton)
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            firstSectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 12),
-            firstSectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            firstSectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            verticalStackView.topAnchor.constraint(equalTo: firstSectionView.bottomAnchor, constant: 20),
-            verticalStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 12),
-            verticalStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -12),
-            verticalStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
-            ingridientsTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 150),
-            preparationMethodTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 150),
+            firstSectionView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16),
+            firstSectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            firstSectionView.trailingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.trailingAnchor),
+            verticalStackView.topAnchor.constraint(equalTo: firstSectionView.bottomAnchor, constant: 20),
+            verticalStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 12),
+            verticalStackView.trailingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.trailingAnchor, constant: -12),
+            verticalStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -12),
+
+            spacingView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.25),
+            ingridientsTextView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.15),
+            preparationMethodTextView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.25),
             continueButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
@@ -143,5 +163,16 @@ extension FormView: UITextViewDelegate {
         didInsertIInstructions?(preparationMethodTextView.text)
 
         textView.resignFirstResponder()
+    }
+}
+
+extension UITextView {
+    func addDoneButton() {
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.resignFirstResponder))
+        toolbar.items = [flexSpace, doneButton]
+        self.inputAccessoryView = toolbar
     }
 }

@@ -148,8 +148,3 @@ extension FirstRecipeSectionView: UITextFieldDelegate {
         endEditing(true)
     }
 }
-
-#Preview("InitialRecipeSectionView") {
-    let view = FirstRecipeSectionView()
-    return view
-}
