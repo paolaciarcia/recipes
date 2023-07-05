@@ -5,13 +5,7 @@
 //  Created by Paola Golombieski Ciarcia on 22/06/23.
 //
 
-import Foundation
 import UIKit
-
-protocol FormViewType: UIView {
-    var didTouchContinueButton: (() -> Void)? { get set }
-    func showRecipe() -> Recipe
-}
 
 final class FormView: UIView {
     var didInsertDishName: ((_ text: String?) -> Void)?
@@ -21,6 +15,7 @@ final class FormView: UIView {
     var didInsertIInstructions: ((String) -> Void)?
 //    var isButtonEnable: ((Bool) -> Void)?
 
+    var didTouchAddImage: (()-> Void)?
     var didTouchContinueButton: (() -> Void)?
 
     private let firstSectionView = FirstRecipeSectionView()
@@ -39,9 +34,8 @@ final class FormView: UIView {
 
     private lazy var addImageButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Adicionar imagem(opcional)", for: .normal)
+        button.setTitle("Adicionar imagem", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.isEnabled = false
         button.addTarget(self, action: #selector(addImageHandler), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -128,22 +122,19 @@ final class FormView: UIView {
         ])
     }
 
-    @objc private func addImageHandler() {
-        print("buscar imagem")
+    @objc
+    private func addImageHandler() {
+        didTouchAddImage?()
     }
 
-    @objc private func saveRecipe() {
+    @objc
+    private func saveRecipe() {
         didTouchContinueButton?()
     }
 
     private func getRecipeInformations(from model: Recipe) {
         continueButton.isEnabled = model.isButtonEnable
     }
-
-//    func show() -> Recipe {
-////        ingridientsTextView.text = viewModel.ingredients
-//        return Recipe(name: name
-//    }
 }
 
 extension FormView: UITextViewDelegate {

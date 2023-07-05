@@ -9,14 +9,6 @@ protocol FormViewControllerDelegate: AnyObject {
 }
 
 final class FormViewController: UIViewController {
-    var didInsertDishName: ((_ text: String?) -> Void)?
-    var didInsertPortions: ((_ quantity: String?) -> Void)?
-    var didInsertDuration: ((_ time: String?) -> Void)?
-    var didInsertIngridients: ((String) -> Void)?
-    var didInsertIInstructions: ((String) -> Void)?
-    var isButtonEnable: ((Bool) -> Void)?
-    var didTouchContinueButton: (() -> Void)?
-
     weak var delegate: FormViewControllerDelegate?
 
     private let contentView: FormView
@@ -74,9 +66,13 @@ final class FormViewController: UIViewController {
             self.delegate?.didSaveRecipe(recipe: self.recipe)
             self.navigationController?.popViewController(animated: true)
         }
+
+        contentView.didTouchAddImage = { [weak self] in
+            self?.createAlertController()
+        }
     }
 
-    @IBAction func updateImage() {
+    private func createAlertController() {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
@@ -124,9 +120,8 @@ final class FormViewController: UIViewController {
 extension FormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let selectedImage = info[.editedImage] as? UIImage else { return }
-//        recipe?.image = selectedImage
-//        addFoodImageView.imageView?.image = selectedImage
-//        Recipe.saveImage(selectedImage, forRecipe: recipe ?? Recipe())
+        recipe.image = selectedImage
+        Recipe.saveImage(selectedImage, forRecipe: recipe )
         dismiss(animated: true)
     }
 }

@@ -10,8 +10,6 @@ import UIKit
 final class RecipeDetailView: UIView {
     private let imageView: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: "defaultImage")
-//        image.contentMode = .scaleAspectFill
         image.layer.borderWidth = 4
         image.clipsToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -65,6 +63,7 @@ final class RecipeDetailView: UIView {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .body)
         label.textColor = UIColor.black
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -82,6 +81,7 @@ final class RecipeDetailView: UIView {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .body)
         label.textColor = UIColor.black
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
