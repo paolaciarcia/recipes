@@ -100,7 +100,6 @@ final class RecipeCell: UITableViewCell {
         titleLabel.text = recipe.name
         portionsLabel.text = "Porções: \(recipe.portions)"
         time.text =  "Tempo de Preparo: \(recipe.timePrepare)"
-
         image.image = recipe.image
     }
 }

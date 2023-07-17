@@ -13,13 +13,12 @@ final class FormView: UIView {
     var didInsertDuration: ((_ time: String?) -> Void)?
     var didInsertIngridients: ((String) -> Void)?
     var didInsertIInstructions: ((String) -> Void)?
-//    var isButtonEnable: ((Bool) -> Void)?
-
     var didTouchAddImage: (()-> Void)?
     var didTouchContinueButton: (() -> Void)?
+    var hasTextViewEnoughCharacters: ((Bool) -> Void)?
+    var hasTextFieldEnoughCharacters: ((Bool) -> Void)?
 
     private let firstSectionView = FirstRecipeSectionView()
-
     private let scrollView: UIScrollView = {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -50,11 +49,12 @@ final class FormView: UIView {
         return button
     }()
 
-    private lazy var continueButton: UIButton = {
+    lazy var continueButton: UIButton = {
         let button = UIButton()
         button.setTitle("SALVAR", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .systemBlue
+        button.isEnabled = false
+        button.setTitleColor(.systemGray, for: .normal)
+        button.backgroundColor = .systemGray4
         button.layer.cornerRadius = 18
         button.addTarget(self, action: #selector(saveRecipe), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -84,10 +84,8 @@ final class FormView: UIView {
     private func setupTextView() {
         ingridientsTextView.translatesAutoresizingMaskIntoConstraints = false
         ingridientsTextView.layer.cornerRadius = 8
-        ingridientsTextView.addDoneButton()
         preparationMethodTextView.translatesAutoresizingMaskIntoConstraints = false
         preparationMethodTextView.layer.cornerRadius = 8
-        preparationMethodTextView.addDoneButton()
 
         ingridientsTextView.delegate = self
         preparationMethodTextView.delegate = self
@@ -102,6 +100,10 @@ final class FormView: UIView {
         }
         firstSectionView.didInsertDuration = { [weak self] time in
             self?.didInsertDuration?(time)
+        }
+
+        firstSectionView.hasTextFieldEnoughCharacters = { [weak self] isFilled in
+            self?.hasTextFieldEnoughCharacters?(isFilled)
         }
         didInsertIngridients?(ingridientsTextView.text)
         didInsertIInstructions?(preparationMethodTextView.text)
@@ -151,10 +153,6 @@ final class FormView: UIView {
     private func saveRecipe() {
         didTouchContinueButton?()
     }
-
-    private func getRecipeInformations(from model: Recipe) {
-        continueButton.isEnabled = model.isButtonEnable
-    }
 }
 
 extension FormView: UITextViewDelegate {
@@ -164,15 +162,20 @@ extension FormView: UITextViewDelegate {
 
         textView.resignFirstResponder()
     }
-}
 
-extension UITextView {
-    func addDoneButton() {
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.resignFirstResponder))
-        toolbar.items = [flexSpace, doneButton]
-        self.inputAccessoryView = toolbar
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.text.count > 1 {
+            hasTextViewEnoughCharacters?(true)
+        } else {
+            hasTextViewEnoughCharacters?(false)
+        }
+    }
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
     }
 }

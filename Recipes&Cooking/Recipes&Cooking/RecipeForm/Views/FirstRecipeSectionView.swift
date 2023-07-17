@@ -11,6 +11,7 @@ final class FirstRecipeSectionView: UIView {
     var didInsertDishName: ((_ text: String?) -> Void)?
     var didInsertPortions: ((_ quantity: String?) -> Void)?
     var didInsertDuration: ((_ time: String?) -> Void)?
+    var hasTextFieldEnoughCharacters: ((Bool) -> Void)?
 
     private let firstHorizontalStackView: UIStackView = {
         let stack = UIStackView()
@@ -123,25 +124,29 @@ final class FirstRecipeSectionView: UIView {
             cookingTimeTextField.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
-
-//    func show() -> Recipe {
-//        dishTextField.text = viewModel.name
-//        portionTextField.text = viewModel.portions
-//    }
 }
 
 extension FirstRecipeSectionView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        dishTextField.resignFirstResponder()
-        portionTextField.resignFirstResponder()
-        cookingTimeTextField.resignFirstResponder()
+        textField.resignFirstResponder()
         return true
+    }
+
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        guard let textFieldCount = textField.text?.count else { return }
+        if textFieldCount > 3 {
+            hasTextFieldEnoughCharacters?(true)
+        } else {
+            hasTextFieldEnoughCharacters?(false)
+        }
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         didInsertDishName?(dishTextField.text)
         didInsertPortions?(portionTextField.text)
         didInsertDuration?(cookingTimeTextField.text)
+
+        textField.resignFirstResponder()
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

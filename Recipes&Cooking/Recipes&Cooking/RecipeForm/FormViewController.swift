@@ -1,5 +1,3 @@
-
-
 import UIKit
 import PhotosUI
 import CoreData
@@ -70,6 +68,30 @@ final class FormViewController: UIViewController {
         contentView.didTouchAddImage = { [weak self] in
             self?.createAlertController()
         }
+
+        contentView.hasTextViewEnoughCharacters = { [weak self] isFilled in
+            if isFilled {
+                self?.contentView.continueButton.setTitleColor(.white, for: .normal)
+                self?.contentView.continueButton.backgroundColor = .systemBlue
+                self?.contentView.continueButton.isEnabled = true
+            } else {
+                self?.contentView.continueButton.setTitleColor(.systemGray, for: .normal)
+                self?.contentView.continueButton.backgroundColor = .systemGray4
+                self?.contentView.continueButton.isEnabled = false
+            }
+        }
+
+        contentView.hasTextFieldEnoughCharacters = { [weak self] isFilled in
+            if isFilled {
+                self?.contentView.continueButton.setTitleColor(.white, for: .normal)
+                self?.contentView.continueButton.backgroundColor = .systemBlue
+                self?.contentView.continueButton.isEnabled = true
+            } else {
+                self?.contentView.continueButton.setTitleColor(.systemGray, for: .normal)
+                self?.contentView.continueButton.backgroundColor = .systemGray4
+                self?.contentView.continueButton.isEnabled = false
+            }
+        }
     }
 
     private func createAlertController() {
@@ -119,9 +141,9 @@ final class FormViewController: UIViewController {
 
 extension FormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let selectedImage = info[.editedImage] as? UIImage else { return }
+        guard let selectedImage = info[.originalImage] as? UIImage else { return }
         recipe.image = selectedImage
-        Recipe.saveImage(selectedImage, forRecipe: recipe )
+        Recipe.saveImage(selectedImage, forRecipe: recipe)
         dismiss(animated: true)
     }
 }
