@@ -13,10 +13,13 @@ final class FormView: UIView {
     var didInsertDuration: ((_ time: String?) -> Void)?
     var didInsertIngridients: ((String) -> Void)?
     var didInsertIInstructions: ((String) -> Void)?
-    var didTouchAddImage: (()-> Void)?
+    var didTouchAddImage: (() -> Void)?
     var didTouchContinueButton: (() -> Void)?
-    var hasTextViewEnoughCharacters: ((Bool) -> Void)?
-    var hasTextFieldEnoughCharacters: ((Bool) -> Void)?
+    var hasIngridientsEnoughCharacters: ((Int) -> Void)?
+    var hasInstructionsEnoughCharacters: ((Int) -> Void)?
+    var hasDishTextFieldEnoughCharacters: ((Int) -> Void)?
+    var hasPortionsTextFieldEnoughCharacters: ((Int) -> Void)?
+    var hasTimeTextFieldEnoughCharacters: ((Int) -> Void)?
 
     private let firstSectionView = FirstRecipeSectionView()
     private let scrollView: UIScrollView = {
@@ -52,9 +55,9 @@ final class FormView: UIView {
     lazy var continueButton: UIButton = {
         let button = UIButton()
         button.setTitle("SALVAR", for: .normal)
-        button.isEnabled = false
-        button.setTitleColor(.systemGray, for: .normal)
-        button.backgroundColor = .systemGray4
+//        button.isEnabled = false
+//        button.setTitleColor(.systemGray, for: .normal)
+//        button.backgroundColor = .systemGray4
         button.layer.cornerRadius = 18
         button.addTarget(self, action: #selector(saveRecipe), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -102,12 +105,22 @@ final class FormView: UIView {
             self?.didInsertDuration?(time)
         }
 
-        firstSectionView.hasTextFieldEnoughCharacters = { [weak self] isFilled in
-            self?.hasTextFieldEnoughCharacters?(isFilled)
+        firstSectionView.hasDishTextFieldEnoughCharacters = { [weak self] characterCount in
+            self?.hasDishTextFieldEnoughCharacters?(characterCount)
         }
+
+        firstSectionView.hasPortionsTextFieldEnoughCharacters = { [weak self] characterCount in
+            self?.hasPortionsTextFieldEnoughCharacters?(characterCount)
+        }
+
+        firstSectionView.hasTimeTextFieldEnoughCharacters = { [weak self] characterCount in
+            self?.hasTimeTextFieldEnoughCharacters?(characterCount)
+        }
+
         didInsertIngridients?(ingridientsTextView.text)
         didInsertIInstructions?(preparationMethodTextView.text)
     }
+
 
     private func setupViewHierarchy() {
         addSubview(scrollView)
@@ -163,13 +176,13 @@ extension FormView: UITextViewDelegate {
         textView.resignFirstResponder()
     }
 
-    func textViewDidChange(_ textView: UITextView) {
-        if textView.text.count > 1 {
-            hasTextViewEnoughCharacters?(true)
-        } else {
-            hasTextViewEnoughCharacters?(false)
-        }
-    }
+//    func textViewDidChange(_ textView: UITextView) {
+//        if textView.text.count > 1 {
+//            hasTextViewEnoughCharacters?(true)
+//        } else {
+//            hasTextViewEnoughCharacters?(false)
+//        }
+//    }
 
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {

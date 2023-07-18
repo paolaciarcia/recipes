@@ -11,7 +11,9 @@ final class FirstRecipeSectionView: UIView {
     var didInsertDishName: ((_ text: String?) -> Void)?
     var didInsertPortions: ((_ quantity: String?) -> Void)?
     var didInsertDuration: ((_ time: String?) -> Void)?
-    var hasTextFieldEnoughCharacters: ((Bool) -> Void)?
+    var hasDishTextFieldEnoughCharacters: ((Int) -> Void)?
+    var hasPortionsTextFieldEnoughCharacters: ((Int) -> Void)?
+    var hasTimeTextFieldEnoughCharacters: ((Int) -> Void)?
 
     private let firstHorizontalStackView: UIStackView = {
         let stack = UIStackView()
@@ -53,6 +55,7 @@ final class FirstRecipeSectionView: UIView {
         let textField = UITextField()
         textField.backgroundColor = .white
         textField.layer.cornerRadius = 8
+        textField.addTarget(self, action: #selector(handleDishNameTextField), for: .editingChanged)
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -62,6 +65,7 @@ final class FirstRecipeSectionView: UIView {
         let textField = UITextField()
         textField.backgroundColor = .white
         textField.layer.cornerRadius = 8
+        textField.addTarget(self, action: #selector(handlePortionsTextField), for: .editingChanged)
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -124,21 +128,27 @@ final class FirstRecipeSectionView: UIView {
             cookingTimeTextField.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
+
+    @objc private func handleDishNameTextField() {
+        guard let dishTextFieldCount = dishTextField.text?.count else { return }
+        hasDishTextFieldEnoughCharacters?(dishTextFieldCount)
+    }
+
+    @objc private func handlePortionsTextField() {
+        guard let portionsTextFieldCount = portionTextField.text?.count else { return }
+        hasPortionsTextFieldEnoughCharacters?(portionsTextFieldCount)
+    }
+
+    @objc private func handleTimeTextField() {
+        guard let timeTextFieldCount = cookingTimeTextField.text?.count else { return }
+        hasTimeTextFieldEnoughCharacters?(timeTextFieldCount)
+    }
 }
 
 extension FirstRecipeSectionView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-    }
-
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        guard let textFieldCount = textField.text?.count else { return }
-        if textFieldCount > 3 {
-            hasTextFieldEnoughCharacters?(true)
-        } else {
-            hasTextFieldEnoughCharacters?(false)
-        }
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {

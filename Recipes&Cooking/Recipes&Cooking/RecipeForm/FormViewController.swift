@@ -12,6 +12,13 @@ final class FormViewController: UIViewController {
     private let contentView: FormView
     private var recipe = Recipe()
 
+    var dishTextFieldCount = 0
+    var portionsTextFieldCount = 0
+    var timeTextFieldCount = 0
+
+    var ingridientsTextViewCount = 0
+    var instructionsTextViewCount = 0
+
     init(contentView: FormView = FormView()) {
         self.contentView = contentView
         super.init(nibName: nil, bundle: nil)
@@ -32,6 +39,7 @@ final class FormViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.tintColor = .black
         bindLayoutEvents()
+        setButtonState()
     }
 
     private func bindLayoutEvents() {
@@ -41,9 +49,8 @@ final class FormViewController: UIViewController {
         }
 
         contentView.didInsertPortions = { [weak self] quantity in
-            guard let quantity = quantity,
-                  let quantityPortions = Int(quantity) else { return }
-            self?.recipe.portions = quantityPortions
+            guard let quantity = quantity else { return }
+            self?.recipe.portions = quantity
         }
 
         contentView.didInsertDuration = { [weak self] time in
@@ -69,28 +76,34 @@ final class FormViewController: UIViewController {
             self?.createAlertController()
         }
 
-        contentView.hasTextViewEnoughCharacters = { [weak self] isFilled in
-            if isFilled {
-                self?.contentView.continueButton.setTitleColor(.white, for: .normal)
-                self?.contentView.continueButton.backgroundColor = .systemBlue
-                self?.contentView.continueButton.isEnabled = true
-            } else {
-                self?.contentView.continueButton.setTitleColor(.systemGray, for: .normal)
-                self?.contentView.continueButton.backgroundColor = .systemGray4
-                self?.contentView.continueButton.isEnabled = false
-            }
+        contentView.hasIngridientsEnoughCharacters = { [weak self] characterCount in
+            self?.ingridientsTextViewCount = characterCount
         }
 
-        contentView.hasTextFieldEnoughCharacters = { [weak self] isFilled in
-            if isFilled {
-                self?.contentView.continueButton.setTitleColor(.white, for: .normal)
-                self?.contentView.continueButton.backgroundColor = .systemBlue
-                self?.contentView.continueButton.isEnabled = true
-            } else {
-                self?.contentView.continueButton.setTitleColor(.systemGray, for: .normal)
-                self?.contentView.continueButton.backgroundColor = .systemGray4
-                self?.contentView.continueButton.isEnabled = false
-            }
+        contentView.hasInstructionsEnoughCharacters = { [weak self] characterCount in
+            self?.instructionsTextViewCount = characterCount
+            print("characterCount: \(characterCount)")
+        }
+
+        contentView.hasDishTextFieldEnoughCharacters = { [weak self] characterCount in
+            self?.dishTextFieldCount = characterCount
+        }
+
+        contentView.hasPortionsTextFieldEnoughCharacters = { [weak self] characterCount in
+            self?.portionsTextFieldCount = characterCount
+        }
+
+        contentView.hasTimeTextFieldEnoughCharacters = { [weak self] characterCount in
+            self?.timeTextFieldCount = characterCount
+        }
+
+    }
+
+    private func setButtonState() {
+        if dishTextFieldCount > 3 {
+            print("recipe is Valid")
+        } else {
+            print("recipe is NOT Valid")
         }
     }
 
