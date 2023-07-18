@@ -15,9 +15,8 @@ final class FormViewController: UIViewController {
     var dishTextFieldCount = 0
     var portionsTextFieldCount = 0
     var timeTextFieldCount = 0
-
-    var ingridientsTextViewCount = 0
-    var instructionsTextViewCount = 0
+    var ingridientsCount = 0
+    var instructionsCount = 0
 
     init(contentView: FormView = FormView()) {
         self.contentView = contentView
@@ -76,31 +75,38 @@ final class FormViewController: UIViewController {
             self?.createAlertController()
         }
 
-        contentView.hasIngridientsEnoughCharacters = { [weak self] characterCount in
-            self?.ingridientsTextViewCount = characterCount
-        }
-
-        contentView.hasInstructionsEnoughCharacters = { [weak self] characterCount in
-            self?.instructionsTextViewCount = characterCount
-            print("characterCount: \(characterCount)")
-        }
-
         contentView.hasDishTextFieldEnoughCharacters = { [weak self] characterCount in
             self?.dishTextFieldCount = characterCount
+            self?.setButtonState()
         }
 
         contentView.hasPortionsTextFieldEnoughCharacters = { [weak self] characterCount in
             self?.portionsTextFieldCount = characterCount
+            self?.setButtonState()
         }
 
         contentView.hasTimeTextFieldEnoughCharacters = { [weak self] characterCount in
             self?.timeTextFieldCount = characterCount
+            self?.setButtonState()
         }
 
+        contentView.textViewIngridientsCount = { [weak self] characterCount in
+            self?.ingridientsCount = characterCount
+            self?.setButtonState()
+        }
+
+        contentView.textViewInstructionsCount = { [weak self] characterCount in
+            self?.instructionsCount = characterCount
+            self?.setButtonState()
+        }
     }
 
     private func setButtonState() {
-        if dishTextFieldCount > 3 {
+        if dishTextFieldCount > 3 &&
+            portionsTextFieldCount > 1 &&
+            timeTextFieldCount > 1 &&
+            ingridientsCount > 1 &&
+            instructionsCount > 1 {
             print("recipe is Valid")
         } else {
             print("recipe is NOT Valid")

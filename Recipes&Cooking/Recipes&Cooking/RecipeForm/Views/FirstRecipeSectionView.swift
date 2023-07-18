@@ -76,6 +76,7 @@ final class FirstRecipeSectionView: UIView {
         textField.backgroundColor = .white
         textField.layer.cornerRadius = 8
         textField.placeholder = "Ex: 60 min"
+        textField.addTarget(self, action: #selector(handleTimeTextField), for: .editingChanged)
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
