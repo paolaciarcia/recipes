@@ -10,7 +10,7 @@ struct Recipe {
     var timePrepare: String = ""
     var ingredients: String = ""
     var instructions: String = ""
-    var image: UIImage? = UIImage(named: "imageTest")
+    var image: UIImage? = UIImage(named: "emptyState")
 
     static func saveImage(_ image: UIImage, forRecipe recipe: Recipe) {
         let imageURL = FileManager.documentDirectoryURL.appendingPathComponent(recipe.name)

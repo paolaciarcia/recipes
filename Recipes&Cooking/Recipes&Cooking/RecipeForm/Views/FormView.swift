@@ -169,16 +169,17 @@ final class FormView: UIView {
 
 extension FormView: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
-        didInsertIngridients?(ingridientsTextView.text)
-        didInsertIInstructions?(preparationMethodTextView.text)
         textView.resignFirstResponder()
     }
 
     func textViewDidChange(_ textView: UITextView) {
         let ingredientsCount = ingridientsTextView.text.count
         let instructionsCount = preparationMethodTextView.text.count
+
         textViewIngridientsCount?(ingredientsCount)
         textViewInstructionsCount?(instructionsCount)
+        didInsertIngridients?(ingridientsTextView.text)
+        didInsertIInstructions?(preparationMethodTextView.text)
     }
 
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {

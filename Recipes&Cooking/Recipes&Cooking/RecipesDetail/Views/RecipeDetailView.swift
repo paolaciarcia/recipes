@@ -25,7 +25,7 @@ final class RecipeDetailView: UIView {
 
     private let imageView: UIImageView = {
         let image = UIImageView()
-        image.layer.borderWidth = 4
+        image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
