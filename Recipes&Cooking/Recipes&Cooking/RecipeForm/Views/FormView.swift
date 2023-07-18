@@ -171,14 +171,12 @@ extension FormView: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         didInsertIngridients?(ingridientsTextView.text)
         didInsertIInstructions?(preparationMethodTextView.text)
-
         textView.resignFirstResponder()
     }
 
     func textViewDidChange(_ textView: UITextView) {
         let ingredientsCount = ingridientsTextView.text.count
         let instructionsCount = preparationMethodTextView.text.count
-
         textViewIngridientsCount?(ingredientsCount)
         textViewInstructionsCount?(instructionsCount)
     }

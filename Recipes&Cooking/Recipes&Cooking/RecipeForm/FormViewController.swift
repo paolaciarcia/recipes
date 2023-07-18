@@ -101,15 +101,23 @@ final class FormViewController: UIViewController {
         }
     }
 
-    private func setButtonState() {
-        if dishTextFieldCount > 3 &&
+    private func isValid() -> Bool {
+        return dishTextFieldCount > 3 &&
             portionsTextFieldCount > 1 &&
             timeTextFieldCount > 1 &&
             ingridientsCount > 1 &&
-            instructionsCount > 1 {
-            print("recipe is Valid")
+            instructionsCount > 1
+    }
+
+    private func setButtonState() {
+        if isValid() {
+            contentView.continueButton.backgroundColor = .systemBlue
+            contentView.continueButton.setTitleColor(.white, for: .normal)
+            contentView.continueButton.isEnabled = true
         } else {
-            print("recipe is NOT Valid")
+            contentView.continueButton.backgroundColor = .systemGray4
+            contentView.continueButton.setTitleColor(.systemGray, for: .normal)
+            contentView.continueButton.isEnabled = false
         }
     }
 
