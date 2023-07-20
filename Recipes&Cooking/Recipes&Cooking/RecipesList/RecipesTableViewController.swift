@@ -1,11 +1,13 @@
 
 
 import UIKit
-
+import CoreData
 
 class RecipesTableViewController: UIViewController {
     private var recipes = [Recipe]()
     private var emptyView = EmptyListView()
+
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
@@ -26,7 +28,8 @@ class RecipesTableViewController: UIViewController {
     }
 
     override func loadView() {
-        view = emptyView
+        loadItems()
+        checkEmptyList()
 
     }
 
@@ -35,6 +38,7 @@ class RecipesTableViewController: UIViewController {
         title = "Receitas"
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Voltar", style: .plain, target: nil, action: nil)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(createRecipe))
+        print("open this file\(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -55,13 +59,24 @@ class RecipesTableViewController: UIViewController {
             view = tableView
         }
     }
+
+    func loadItems() {
+        let request: NSFetchRequest<Recipe> = Recipe.fetchRequest()
+
+        do {
+            recipes = try context.fetch(request)
+        } catch {
+            print("Error loading data from \(error)")
+        }
+        tableView.reloadData()
+    }
 }
 
 extension RecipesTableViewController: FormViewControllerDelegate {
     func didSaveRecipe(recipe: Recipe) {
         recipes.append(recipe)
         tableView.reloadData()
-        checkEmptyList()
+//        checkEmptyList()
     }
 }
 
@@ -114,8 +129,3 @@ extension RecipesTableViewController: UITableViewDataSource {
             return height * 0.15
         }
     }
-
-//#Preview("RecipesTableViewController") {
-//    let viewController = RecipesTableViewController()
-//    return viewController
-//}

@@ -19,8 +19,9 @@
 		C51E998E2A4DC42D00FFEAEF /* RecipeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E998D2A4DC42D00FFEAEF /* RecipeDetailView.swift */; };
 		C555D03A2A447DC30001DF25 /* FormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C555D0392A447DC30001DF25 /* FormView.swift */; };
 		C555D03D2A44955A0001DF25 /* DescritionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C555D03C2A44955A0001DF25 /* DescritionLabel.swift */; };
-		C564C4512A682BD100E9262B /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C564C44F2A682BD100E9262B /* DataModel.xcdatamodeld */; };
 		C5B2D2DD2A44C04E00EA61DD /* FirstRecipeSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B2D2DC2A44C04E00EA61DD /* FirstRecipeSectionView.swift */; };
+		C5D579FA2A6864B600DB5C4B /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C5D579F82A6864B500DB5C4B /* DataModel.xcdatamodeld */; };
+		C5D579FF2A68861B00DB5C4B /* DataBaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D579FE2A68861B00DB5C4B /* DataBaseHelper.swift */; };
 		C5F1280B2A336C7000532FBF /* RecipeListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F1280A2A336C7000532FBF /* RecipeListTableView.swift */; };
 		C5F1280E2A33B05800532FBF /* EmptyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F1280D2A33B05800532FBF /* EmptyListView.swift */; };
 /* End PBXBuildFile section */
@@ -40,8 +41,9 @@
 		C51E998D2A4DC42D00FFEAEF /* RecipeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailView.swift; sourceTree = "<group>"; };
 		C555D0392A447DC30001DF25 /* FormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormView.swift; sourceTree = "<group>"; };
 		C555D03C2A44955A0001DF25 /* DescritionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescritionLabel.swift; sourceTree = "<group>"; };
-		C564C4502A682BD100E9262B /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		C5B2D2DC2A44C04E00EA61DD /* FirstRecipeSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstRecipeSectionView.swift; sourceTree = "<group>"; };
+		C5D579F92A6864B600DB5C4B /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		C5D579FE2A68861B00DB5C4B /* DataBaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseHelper.swift; sourceTree = "<group>"; };
 		C5F1280A2A336C7000532FBF /* RecipeListTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeListTableView.swift; sourceTree = "<group>"; };
 		C5F1280D2A33B05800532FBF /* EmptyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -60,6 +62,7 @@
 		607C9A3825C0632A009A5E11 = {
 			isa = PBXGroup;
 			children = (
+				C5D579F82A6864B500DB5C4B /* DataModel.xcdatamodeld */,
 				607C9A4325C0632A009A5E11 /* Recipes&Cooking */,
 				607C9A4225C0632A009A5E11 /* Products */,
 			);
@@ -76,7 +79,6 @@
 		607C9A4325C0632A009A5E11 /* Recipes&Cooking */ = {
 			isa = PBXGroup;
 			children = (
-				C564C44F2A682BD100E9262B /* DataModel.xcdatamodeld */,
 				C555D03B2A4495490001DF25 /* Helpers */,
 				C5F128062A336A5D00532FBF /* RecipeForm */,
 				C5F128052A336A2C00532FBF /* RecipesDetail */,
@@ -103,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				C555D03C2A44955A0001DF25 /* DescritionLabel.swift */,
+				C5D579FE2A68861B00DB5C4B /* DataBaseHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -233,7 +236,8 @@
 				C555D03D2A44955A0001DF25 /* DescritionLabel.swift in Sources */,
 				607C9A4925C0632A009A5E11 /* DetailViewController.swift in Sources */,
 				C51E998E2A4DC42D00FFEAEF /* RecipeDetailView.swift in Sources */,
-				C564C4512A682BD100E9262B /* DataModel.xcdatamodeld in Sources */,
+				C5D579FA2A6864B600DB5C4B /* DataModel.xcdatamodeld in Sources */,
+				C5D579FF2A68861B00DB5C4B /* DataBaseHelper.swift in Sources */,
 				607C9A4525C0632A009A5E11 /* AppDelegate.swift in Sources */,
 				C5B2D2DD2A44C04E00EA61DD /* FirstRecipeSectionView.swift in Sources */,
 				C555D03A2A447DC30001DF25 /* FormView.swift in Sources */,
@@ -441,12 +445,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		C564C44F2A682BD100E9262B /* DataModel.xcdatamodeld */ = {
+		C5D579F82A6864B500DB5C4B /* DataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				C564C4502A682BD100E9262B /* DataModel.xcdatamodel */,
+				C5D579F92A6864B600DB5C4B /* DataModel.xcdatamodel */,
 			);
-			currentVersion = C564C4502A682BD100E9262B /* DataModel.xcdatamodel */;
+			currentVersion = C5D579F92A6864B600DB5C4B /* DataModel.xcdatamodel */;
 			path = DataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

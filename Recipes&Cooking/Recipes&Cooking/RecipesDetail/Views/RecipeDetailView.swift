@@ -143,14 +143,18 @@ final class RecipeDetailView: UIView {
     }
 
     func show(viewModel: Recipe) {
-        imageView.image = viewModel.image
+        let convertedImage = DataBaseHelper.shareInstance.fetchImage()
+
+        guard let time = viewModel.timePrepare,
+        let portions = viewModel.portions else { return }
+//        imageView.image = UIImage(data: convertedImage[0].image!)
         titleLabel.text = viewModel.name
-        setAttributedText(with: "Preparo: \(viewModel.timePrepare)",
-                          range: viewModel.timePrepare,
+        setAttributedText(with: "Preparo: \(time)",
+                          range: time,
                           label: timeDescriptionLabel)
 
-        setAttributedText(with: "Porções: \(viewModel.portions)",
-                          range: "\(viewModel.portions)",
+        setAttributedText(with: "Porções: \(portions)",
+                          range: portions,
                           label: portionLabel)
         ingridientsDescriptionLabel.text = viewModel.ingredients
         instructionsDescriptionLabel.text = viewModel.instructions

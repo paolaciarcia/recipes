@@ -10,7 +10,7 @@ final class FormViewController: UIViewController {
     weak var delegate: FormViewControllerDelegate?
 
     private let contentView: FormView
-    private var recipe = Recipe()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     var dishTextFieldCount = 0
     var portionsTextFieldCount = 0
@@ -42,32 +42,35 @@ final class FormViewController: UIViewController {
     }
 
     private func bindLayoutEvents() {
-        contentView.didInsertDishName = { [weak self] name in
+        let recipe = Recipe(context: context)
+
+        contentView.didInsertDishName = { name in
             guard let name = name else { return }
-            self?.recipe.name = name
+            recipe.name = name
         }
 
-        contentView.didInsertPortions = { [weak self] quantity in
+        contentView.didInsertPortions = { quantity in
             guard let quantity = quantity else { return }
-            self?.recipe.portions = quantity
+            recipe.portions = quantity
         }
 
-        contentView.didInsertDuration = { [weak self] time in
+        contentView.didInsertDuration = { time in
             guard let time = time else { return }
-            self?.recipe.timePrepare = time
+            recipe.timePrepare = time
         }
 
-        contentView.didInsertIngridients = { [weak self] ingridients in
-            self?.recipe.ingredients = ingridients
+        contentView.didInsertIngridients = { ingridients in
+            recipe.ingredients = ingridients
         }
 
-        contentView.didInsertIInstructions = { [weak self] instructions in
-            self?.recipe.instructions = instructions
+        contentView.didInsertIInstructions = { instructions in
+            recipe.instructions = instructions
         }
 
         contentView.didTouchContinueButton = { [weak self] in
             guard let self else { return }
-            self.delegate?.didSaveRecipe(recipe: self.recipe)
+            self.delegate?.didSaveRecipe(recipe: recipe)
+            self.saveRecipe()
             self.navigationController?.popViewController(animated: true)
         }
 
@@ -164,13 +167,32 @@ final class FormViewController: UIViewController {
 
         present(alertController, animated: true, completion: nil)
     }
+
+    private func saveRecipe() {
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context\(error)")
+        }
+    }
+
+    private func saveImage(_ image: UIImage) {
+        let newRecipe = Recipe(context: context)
+        let imageURL = FileManager.documentDirectoryURL.appendingPathComponent(newRecipe.name ?? "")
+        if let jpgData = image.jpegData(compressionQuality: 0.7) {
+            try? jpgData.write(to: imageURL, options: .atomicWrite)
+        }
+    }
 }
 
 extension FormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let selectedImage = info[.originalImage] as? UIImage else { return }
-        recipe.image = selectedImage
-        Recipe.saveImage(selectedImage, forRecipe: recipe)
+
+        if let imageData = selectedImage.pngData() {
+            DataBaseHelper.shareInstance.saveImage(data: imageData)
+        }
+        saveImage(selectedImage)
         dismiss(animated: true)
     }
 }

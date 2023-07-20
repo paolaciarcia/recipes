@@ -97,9 +97,12 @@ final class RecipeCell: UITableViewCell {
     }
 
     func prepareCell(recipe: Recipe) {
+        let convertedImage = DataBaseHelper.shareInstance.fetchImage()
+        guard let timePrepare = recipe.timePrepare,
+              let portions = recipe.portions else { return }
         titleLabel.text = recipe.name
-        portionsLabel.text = "Porções: \(recipe.portions)"
-        time.text =  "Tempo de Preparo: \(recipe.timePrepare)"
-        image.image = recipe.image
+        portionsLabel.text = "Porções: \(portions)"
+        time.text =  "Tempo de Preparo: \(timePrepare)"
+//        image.image = UIImage(data: convertedImage[0].image!)
     }
 }
