@@ -2,32 +2,10 @@ import UIKit
 import PhotosUI
 import CoreData
 
-protocol FormViewControllerDelegate: AnyObject {
-    func didSaveRecipe(dishImage: UIImage,
-                       dishName: String,
-                       portions: String,
-                       time: String,
-                       ingridients: String,
-                       instructions: String)
-}
-
 final class FormViewController: UIViewController {
-    weak var delegate: FormViewControllerDelegate?
 
     private let contentView: FormView
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
-    var dishImage: UIImage = UIImage()
-    var dishName: String = ""
-    var portions: String = ""
-    var time: String = ""
-    var ingridients: String = ""
-    var instructions: String = ""
-    var dishTextFieldCount = 0
-    var portionsTextFieldCount = 0
-    var timeTextFieldCount = 0
-    var ingridientsCount = 0
-    var instructionsCount = 0
+    private var recipeModel = RecipeModel()
 
     init(contentView: FormView = FormView()) {
         self.contentView = contentView
@@ -52,42 +30,28 @@ final class FormViewController: UIViewController {
         setButtonState()
     }
 
-//    private func saveRecipe() {
-//        delegate?.didSaveRecipe(dishImage: dishImage,
-//                                dishName: dishName,
-//                                portions: portions,
-//                                time: time,
-//                                ingridients: ingridients,
-//                                instructions: instructions)
-//    }
-
     private func bindLayoutEvents() {
         contentView.didInsertDishName = { [weak self] name in
             guard let name = name else { return }
-            self?.dishName = name
+            self?.recipeModel.dishName = name
         }
 
         contentView.didInsertPortions = { [weak self] quantity in
             guard let quantity = quantity else { return }
-            self?.portions = quantity
+            self?.recipeModel.portions = quantity
         }
 
         contentView.didInsertDuration = { [weak self] time in
             guard let time = time else { return }
-            self?.time = time
+            self?.recipeModel.time = time
         }
 
         contentView.didInsertIngridients = { [weak self] ingridients in
-            self?.ingridients = ingridients
+            self?.recipeModel.ingridients = ingridients
         }
 
         contentView.didInsertIInstructions = { [weak self] instructions in
-            self?.instructions = instructions
-        }
-
-        contentView.didTouchContinueButton = { [weak self] in
-            self?.saveRecipeToCoreData()
-            self?.navigationController?.popViewController(animated: true)
+            self?.recipeModel.instructions = instructions
         }
 
         contentView.didTouchAddImage = { [weak self] in
@@ -95,37 +59,42 @@ final class FormViewController: UIViewController {
         }
 
         contentView.hasDishTextFieldEnoughCharacters = { [weak self] characterCount in
-            self?.dishTextFieldCount = characterCount
+            self?.recipeModel.dishTextFieldCount = characterCount
             self?.setButtonState()
         }
 
         contentView.hasPortionsTextFieldEnoughCharacters = { [weak self] characterCount in
-            self?.portionsTextFieldCount = characterCount
+            self?.recipeModel.portionsTextFieldCount = characterCount
             self?.setButtonState()
         }
 
         contentView.hasTimeTextFieldEnoughCharacters = { [weak self] characterCount in
-            self?.timeTextFieldCount = characterCount
+            self?.recipeModel.timeTextFieldCount = characterCount
             self?.setButtonState()
         }
 
         contentView.textViewIngridientsCount = { [weak self] characterCount in
-            self?.ingridientsCount = characterCount
+            self?.recipeModel.ingridientsCount = characterCount
             self?.setButtonState()
         }
 
         contentView.textViewInstructionsCount = { [weak self] characterCount in
-            self?.instructionsCount = characterCount
+            self?.recipeModel.instructionsCount = characterCount
             self?.setButtonState()
+        }
+
+        contentView.didTouchContinueButton = { [weak self] in
+            self?.saveRecipeToCoreData()
+            self?.navigationController?.popViewController(animated: true)
         }
     }
 
     private func isValid() -> Bool {
-        return dishTextFieldCount > 3 &&
-            portionsTextFieldCount > 1 &&
-            timeTextFieldCount > 1 &&
-            ingridientsCount > 1 &&
-            instructionsCount > 1
+        return recipeModel.dishTextFieldCount > 3 &&
+        recipeModel.portionsTextFieldCount > 1 &&
+        recipeModel.timeTextFieldCount > 1 &&
+        recipeModel.ingridientsCount > 1 &&
+        recipeModel.instructionsCount > 1
     }
 
     private func setButtonState() {
@@ -185,19 +154,14 @@ final class FormViewController: UIViewController {
     }
 
     private func saveRecipeToCoreData() {
-        DataBaseHelper.saveImageToCoreData(dishName: dishName,
-                                           portions: portions,
-                                           time: time,
-                                           ingridients: ingridients,
-                                           instructions: instructions,
-                                           dishImage: dishImage)
+        DataBaseHelper.saveImageToCoreData(recipeModel: recipeModel)
     }
 }
 
 extension FormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let selectedImage = info[.originalImage] as? UIImage else { return }
-        dishImage = selectedImage
+        recipeModel.dishImage = selectedImage
         dismiss(animated: true)
     }
 }

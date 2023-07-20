@@ -159,6 +159,8 @@ final class RecipeDetailView: UIView {
 
         if let convertedImage = viewModel.image {
             imageView.image = UIImage(data: convertedImage)
+        } else {
+            imageView.image = UIImage(named: "emptyState")
         }
     }
 

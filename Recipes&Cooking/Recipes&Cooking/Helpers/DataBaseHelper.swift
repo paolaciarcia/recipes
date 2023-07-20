@@ -9,16 +9,17 @@ import UIKit
 import CoreData
 
 struct DataBaseHelper {
-    static func saveImageToCoreData(dishName: String, portions: String, time: String, ingridients: String, instructions: String, dishImage: UIImage) {
+    static func saveImageToCoreData(recipeModel: RecipeModel) {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let newRecipe = Recipe(context: context)
 
-        newRecipe.image = dishImage.pngData()
-        newRecipe.name = dishName
-        newRecipe.portions = portions
-        newRecipe.timePrepare = time
-        newRecipe.ingredients = ingridients
-        newRecipe.instructions = instructions
+        recipeModel.dishImage?.pngData() 
+        newRecipe.image = recipeModel.dishImage?.pngData()
+        newRecipe.name = recipeModel.dishName
+        newRecipe.portions = recipeModel.portions
+        newRecipe.timePrepare = recipeModel.time
+        newRecipe.ingredients = recipeModel.ingridients
+        newRecipe.instructions = recipeModel.instructions
         
         do {
             try context.save()

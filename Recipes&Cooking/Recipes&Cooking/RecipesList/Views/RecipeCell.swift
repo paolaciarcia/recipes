@@ -105,6 +105,8 @@ final class RecipeCell: UITableViewCell {
 
         if let convertedImage = recipe.image {
             image.image = UIImage(data: convertedImage)
+        } else {
+            image.image = UIImage(named: "emptyState")
         }
     }
 }
