@@ -176,11 +176,15 @@ final class FormViewController: UIViewController {
         }
     }
 
-    private func saveImage(_ image: UIImage) {
+    private func saveImageToCoreData(_ image: UIImage) {
         let newRecipe = Recipe(context: context)
-        let imageURL = FileManager.documentDirectoryURL.appendingPathComponent(newRecipe.name ?? "")
-        if let jpgData = image.jpegData(compressionQuality: 0.7) {
-            try? jpgData.write(to: imageURL, options: .atomicWrite)
+        newRecipe.image = image.pngData()
+
+        do {
+            try context.save()
+            print("Image saved to Core Data successfully!")
+        } catch {
+            print("Failed to save image: \(error)")
         }
     }
 }
@@ -188,11 +192,7 @@ final class FormViewController: UIViewController {
 extension FormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let selectedImage = info[.originalImage] as? UIImage else { return }
-
-        if let imageData = selectedImage.pngData() {
-            DataBaseHelper.shareInstance.saveImage(data: imageData)
-        }
-        saveImage(selectedImage)
+        saveImageToCoreData(selectedImage)
         dismiss(animated: true)
     }
 }

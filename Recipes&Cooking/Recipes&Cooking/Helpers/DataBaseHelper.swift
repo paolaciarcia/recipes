@@ -8,29 +8,20 @@
 import UIKit
 import CoreData
 
-struct DataBaseHelper {
-    static let shareInstance = DataBaseHelper()
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+final class DataBaseHelper {
+    static func displayImageFromCoreData() -> Data? {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
 
-    func saveImage(data: Data) {
-        let newRecipe = Recipe(context: context)
-        newRecipe.image = data
         do {
-            try context.save()
-            print("Image is saved")
+            let imageEntities = try context.fetch(fetchRequest)
+            if let imageEntity = imageEntities.first,
+               let imageData = imageEntity.image {
+                return imageData
+            }
         } catch {
-            print(error.localizedDescription)
+            print("Failed to fetch image: \(error)")
         }
-    }
-
-    func fetchImage() -> [Recipe] {
-        var fetchingImage = [Recipe]()
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Recipe")
-        do {
-            fetchingImage = try context.fetch(fetchRequest) as! [Recipe]
-        } catch {
-            print("Error while fetching the image")
-        }
-        return fetchingImage
+        return nil
     }
 }

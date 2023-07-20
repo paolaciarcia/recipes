@@ -30,7 +30,6 @@ class RecipesTableViewController: UIViewController {
     override func loadView() {
         loadItems()
         checkEmptyList()
-
     }
 
     override func viewDidLoad() {
@@ -75,8 +74,8 @@ class RecipesTableViewController: UIViewController {
 extension RecipesTableViewController: FormViewControllerDelegate {
     func didSaveRecipe(recipe: Recipe) {
         recipes.append(recipe)
+        checkEmptyList()
         tableView.reloadData()
-//        checkEmptyList()
     }
 }
 
