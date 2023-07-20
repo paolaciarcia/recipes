@@ -1,5 +1,3 @@
-
-
 import UIKit
 import CoreData
 
@@ -34,21 +32,25 @@ class RecipesTableViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Receitas"
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Voltar", style: .plain, target: nil, action: nil)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(createRecipe))
-        print("open this file\(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))")
+        setupNavigationBar()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        loadItems()
+        checkEmptyList()
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     @objc func createRecipe() {
         let formController = FormViewController()
-        formController.delegate = self
         self.navigationController?.pushViewController(formController, animated: true)
+    }
+
+    private func setupNavigationBar() {
+        title = "Receitas"
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Voltar", style: .plain, target: nil, action: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(createRecipe))
     }
 
     private func checkEmptyList() {
@@ -61,7 +63,6 @@ class RecipesTableViewController: UIViewController {
 
     func loadItems() {
         let request: NSFetchRequest<Recipe> = Recipe.fetchRequest()
-
         do {
             recipes = try context.fetch(request)
         } catch {
@@ -71,15 +72,7 @@ class RecipesTableViewController: UIViewController {
     }
 }
 
-extension RecipesTableViewController: FormViewControllerDelegate {
-    func didSaveRecipe(recipe: Recipe) {
-        recipes.append(recipe)
-        checkEmptyList()
-        tableView.reloadData()
-    }
-}
-
-    // MARK: - UITableViewDataSource
+// MARK: - UITableViewDataSource
 
 extension RecipesTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -95,36 +88,36 @@ extension RecipesTableViewController: UITableViewDataSource {
     }
 }
 
-        // MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 
-    extension RecipesTableViewController: UITableViewDelegate {
-        private func setupCellLayout(indexPath: IndexPath) {
-            let cell = tableView.cellForRow(at: indexPath)
-            cell?.selectionStyle = .gray
+extension RecipesTableViewController: UITableViewDelegate {
+    private func setupCellLayout(indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        cell?.selectionStyle = .gray
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                cell?.selectionStyle = .none
-            }
-        }
-
-        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            setupCellLayout(indexPath: indexPath)
-            let recipes = recipes[indexPath.row]
-            let recipeViewController = DetailViewController(recipe: recipes)
-
-            recipeViewController.recipe = recipes
-            self.navigationController?.show(recipeViewController, sender: recipes)
-        }
-
-        func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-            recipes.remove(at: indexPath.row)
-
-            let indexPaths = [indexPath]
-            tableView.deleteRows(at: indexPaths, with: .automatic)
-        }
-
-        func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            let height = UIScreen.main.bounds.height
-            return height * 0.15
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            cell?.selectionStyle = .none
         }
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        setupCellLayout(indexPath: indexPath)
+        let recipes = recipes[indexPath.row]
+        let recipeViewController = DetailViewController(recipe: recipes)
+
+        recipeViewController.recipe = recipes
+        self.navigationController?.show(recipeViewController, sender: recipes)
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        recipes.remove(at: indexPath.row)
+
+        let indexPaths = [indexPath]
+        tableView.deleteRows(at: indexPaths, with: .automatic)
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let height = UIScreen.main.bounds.height
+        return height * 0.15
+    }
+}

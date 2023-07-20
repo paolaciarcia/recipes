@@ -8,20 +8,23 @@
 import UIKit
 import CoreData
 
-final class DataBaseHelper {
-    static func displayImageFromCoreData() -> Data? {
+struct DataBaseHelper {
+    static func saveImageToCoreData(dishName: String, portions: String, time: String, ingridients: String, instructions: String, dishImage: UIImage) {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
+        let newRecipe = Recipe(context: context)
 
+        newRecipe.image = dishImage.pngData()
+        newRecipe.name = dishName
+        newRecipe.portions = portions
+        newRecipe.timePrepare = time
+        newRecipe.ingredients = ingridients
+        newRecipe.instructions = instructions
+        
         do {
-            let imageEntities = try context.fetch(fetchRequest)
-            if let imageEntity = imageEntities.first,
-               let imageData = imageEntity.image {
-                return imageData
-            }
+            try context.save()
+            print("Image saved to Core Data successfully!")
         } catch {
-            print("Failed to fetch image: \(error)")
+            print("Failed to save image: \(error)")
         }
-        return nil
     }
 }

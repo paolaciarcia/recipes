@@ -3,7 +3,12 @@ import PhotosUI
 import CoreData
 
 protocol FormViewControllerDelegate: AnyObject {
-    func didSaveRecipe(recipe: Recipe)
+    func didSaveRecipe(dishImage: UIImage,
+                       dishName: String,
+                       portions: String,
+                       time: String,
+                       ingridients: String,
+                       instructions: String)
 }
 
 final class FormViewController: UIViewController {
@@ -12,6 +17,12 @@ final class FormViewController: UIViewController {
     private let contentView: FormView
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
+    var dishImage: UIImage = UIImage()
+    var dishName: String = ""
+    var portions: String = ""
+    var time: String = ""
+    var ingridients: String = ""
+    var instructions: String = ""
     var dishTextFieldCount = 0
     var portionsTextFieldCount = 0
     var timeTextFieldCount = 0
@@ -41,37 +52,42 @@ final class FormViewController: UIViewController {
         setButtonState()
     }
 
+//    private func saveRecipe() {
+//        delegate?.didSaveRecipe(dishImage: dishImage,
+//                                dishName: dishName,
+//                                portions: portions,
+//                                time: time,
+//                                ingridients: ingridients,
+//                                instructions: instructions)
+//    }
+
     private func bindLayoutEvents() {
-        let recipe = Recipe(context: context)
-
-        contentView.didInsertDishName = { name in
+        contentView.didInsertDishName = { [weak self] name in
             guard let name = name else { return }
-            recipe.name = name
+            self?.dishName = name
         }
 
-        contentView.didInsertPortions = { quantity in
+        contentView.didInsertPortions = { [weak self] quantity in
             guard let quantity = quantity else { return }
-            recipe.portions = quantity
+            self?.portions = quantity
         }
 
-        contentView.didInsertDuration = { time in
+        contentView.didInsertDuration = { [weak self] time in
             guard let time = time else { return }
-            recipe.timePrepare = time
+            self?.time = time
         }
 
-        contentView.didInsertIngridients = { ingridients in
-            recipe.ingredients = ingridients
+        contentView.didInsertIngridients = { [weak self] ingridients in
+            self?.ingridients = ingridients
         }
 
-        contentView.didInsertIInstructions = { instructions in
-            recipe.instructions = instructions
+        contentView.didInsertIInstructions = { [weak self] instructions in
+            self?.instructions = instructions
         }
 
         contentView.didTouchContinueButton = { [weak self] in
-            guard let self else { return }
-            self.delegate?.didSaveRecipe(recipe: recipe)
-            self.saveRecipe()
-            self.navigationController?.popViewController(animated: true)
+            self?.saveRecipeToCoreData()
+            self?.navigationController?.popViewController(animated: true)
         }
 
         contentView.didTouchAddImage = { [weak self] in
@@ -168,31 +184,20 @@ final class FormViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    private func saveRecipe() {
-        do {
-            try context.save()
-        } catch {
-            print("Error saving context\(error)")
-        }
-    }
-
-    private func saveImageToCoreData(_ image: UIImage) {
-        let newRecipe = Recipe(context: context)
-        newRecipe.image = image.pngData()
-
-        do {
-            try context.save()
-            print("Image saved to Core Data successfully!")
-        } catch {
-            print("Failed to save image: \(error)")
-        }
+    private func saveRecipeToCoreData() {
+        DataBaseHelper.saveImageToCoreData(dishName: dishName,
+                                           portions: portions,
+                                           time: time,
+                                           ingridients: ingridients,
+                                           instructions: instructions,
+                                           dishImage: dishImage)
     }
 }
 
 extension FormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let selectedImage = info[.originalImage] as? UIImage else { return }
-        saveImageToCoreData(selectedImage)
+        dishImage = selectedImage
         dismiss(animated: true)
     }
 }

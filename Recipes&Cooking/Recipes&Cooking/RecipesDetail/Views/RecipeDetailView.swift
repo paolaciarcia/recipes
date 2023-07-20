@@ -144,9 +144,8 @@ final class RecipeDetailView: UIView {
 
     func show(viewModel: Recipe) {
         guard let time = viewModel.timePrepare,
-              let portions = viewModel.portions,
-              let convertedImage = DataBaseHelper.displayImageFromCoreData() else { return }
-        imageView.image = UIImage(data: convertedImage)
+              let portions = viewModel.portions else { return }
+
         titleLabel.text = viewModel.name
         setAttributedText(with: "Preparo: \(time)",
                           range: time,
@@ -157,6 +156,10 @@ final class RecipeDetailView: UIView {
                           label: portionLabel)
         ingridientsDescriptionLabel.text = viewModel.ingredients
         instructionsDescriptionLabel.text = viewModel.instructions
+
+        if let convertedImage = viewModel.image {
+            imageView.image = UIImage(data: convertedImage)
+        }
     }
 
     private func setAttributedText(with string: String,

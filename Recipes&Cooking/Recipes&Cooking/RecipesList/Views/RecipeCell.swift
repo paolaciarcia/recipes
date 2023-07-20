@@ -98,11 +98,13 @@ final class RecipeCell: UITableViewCell {
 
     func prepareCell(recipe: Recipe) {
         guard let timePrepare = recipe.timePrepare,
-              let portions = recipe.portions,
-              let convertedImage = DataBaseHelper.displayImageFromCoreData() else { return }
+              let portions = recipe.portions else { return }
         titleLabel.text = recipe.name
         portionsLabel.text = "Porções: \(portions)"
         time.text =  "Tempo de Preparo: \(timePrepare)"
-        image.image = UIImage(data: convertedImage)
+
+        if let convertedImage = recipe.image {
+            image.image = UIImage(data: convertedImage)
+        }
     }
 }
