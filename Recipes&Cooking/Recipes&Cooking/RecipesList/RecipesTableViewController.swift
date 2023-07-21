@@ -60,7 +60,7 @@ class RecipesTableViewController: UIViewController {
         }
     }
 
-    func saveItems() {
+    private func saveItems() {
         do {
             try context.save()
         } catch {
@@ -69,7 +69,7 @@ class RecipesTableViewController: UIViewController {
         self.tableView.reloadData()
     }
 
-    func loadItems() {
+    private func loadItems() {
         let request: NSFetchRequest<Recipe> = Recipe.fetchRequest()
         do {
             recipes = try context.fetch(request)

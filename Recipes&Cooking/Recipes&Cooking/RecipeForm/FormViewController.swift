@@ -3,7 +3,6 @@ import PhotosUI
 import CoreData
 
 final class FormViewController: UIViewController {
-
     private let contentView: FormView
     private var recipeModel = RecipeModel()
 
