@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 
 struct DataBaseHelper {
-    static func saveImageToCoreData(recipeModel: RecipeModel) {
+    static func saveRecipe(recipeModel: RecipeModel) {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let newRecipe = Recipe(context: context)
 

@@ -154,7 +154,7 @@ final class FormViewController: UIViewController {
     }
 
     private func saveRecipeToCoreData() {
-        DataBaseHelper.saveImageToCoreData(recipeModel: recipeModel)
+        DataBaseHelper.saveRecipe(recipeModel: recipeModel)
     }
 }
 

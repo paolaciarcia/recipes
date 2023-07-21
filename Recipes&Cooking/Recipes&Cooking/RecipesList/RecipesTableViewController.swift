@@ -26,8 +26,7 @@ class RecipesTableViewController: UIViewController {
     }
 
     override func loadView() {
-        loadItems()
-        checkEmptyList()
+        view = tableView
     }
 
     override func viewDidLoad() {
@@ -61,6 +60,15 @@ class RecipesTableViewController: UIViewController {
         }
     }
 
+    func saveItems() {
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context \(error)")
+        }
+        self.tableView.reloadData()
+    }
+
     func loadItems() {
         let request: NSFetchRequest<Recipe> = Recipe.fetchRequest()
         do {
@@ -76,7 +84,12 @@ class RecipesTableViewController: UIViewController {
 
 extension RecipesTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        recipes.count
+        if recipes.isEmpty {
+            tableView.backgroundView = EmptyListView()
+        } else {
+            tableView.backgroundView = nil
+        }
+        return recipes.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -104,16 +117,16 @@ extension RecipesTableViewController: UITableViewDelegate {
         setupCellLayout(indexPath: indexPath)
         let recipes = recipes[indexPath.row]
         let recipeViewController = DetailViewController(recipe: recipes)
-
         recipeViewController.recipe = recipes
         self.navigationController?.show(recipeViewController, sender: recipes)
     }
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        context.delete(recipes[indexPath.row])
         recipes.remove(at: indexPath.row)
-
         let indexPaths = [indexPath]
         tableView.deleteRows(at: indexPaths, with: .automatic)
+        saveItems()
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
