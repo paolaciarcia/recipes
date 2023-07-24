@@ -83,7 +83,7 @@ final class FormViewController: UIViewController {
         }
 
         contentView.didTouchContinueButton = { [weak self] in
-            self?.saveRecipeToCoreData()
+            self?.saveRecipeToRealm()
             self?.navigationController?.popViewController(animated: true)
         }
     }
@@ -152,7 +152,7 @@ final class FormViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    private func saveRecipeToCoreData() {
+    private func saveRecipeToRealm() {
         DataBaseHelper.saveRecipe(recipeModel: recipeModel)
     }
 }
@@ -160,7 +160,8 @@ final class FormViewController: UIViewController {
 extension FormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let selectedImage = info[.originalImage] as? UIImage else { return }
-        recipeModel.dishImage = selectedImage
+        let pngData = selectedImage.pngData()
+//        recipeModel.dishImage = pngData
         dismiss(animated: true)
     }
 }

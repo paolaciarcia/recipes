@@ -3,11 +3,11 @@ import UIKit
 import PhotosUI
 
 class DetailViewController: UIViewController {
-    var recipe: Recipe
+    var recipe: RecipeModel
     var isNewRecipe = false
     private let contentView: RecipeDetailView
 
-    init(recipe: Recipe,
+    init(recipe: RecipeModel,
          contentView: RecipeDetailView = RecipeDetailView()) {
         self.recipe = recipe
         self.contentView = contentView

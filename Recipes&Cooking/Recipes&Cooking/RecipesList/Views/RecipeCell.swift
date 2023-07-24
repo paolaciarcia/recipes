@@ -96,15 +96,15 @@ final class RecipeCell: UITableViewCell {
         image.image = nil
     }
 
-    func prepareCell(recipe: Recipe) {
-        guard let timePrepare = recipe.timePrepare,
-              let portions = recipe.portions else { return }
-        titleLabel.text = recipe.name
-        portionsLabel.text = "Porções: \(portions)"
-        time.text =  "Tempo de Preparo: \(timePrepare)"
+    func prepareCell(recipe: RecipeModel) {
+//        guard let timePrepare = recipe.timePrepare,
+//              let portions = recipe.portions else { return }
+        titleLabel.text = recipe.dishName
+        portionsLabel.text = "Porções: \(recipe.portions)"
+        time.text =  "Tempo de Preparo: \(recipe.time)"
 
-        if let convertedImage = recipe.image {
-            image.image = UIImage(data: convertedImage)
+        if let recipeImage = recipe.dishImage {
+            image.image = UIImage(data: recipeImage)
         } else {
             image.image = UIImage(named: "emptyState")
         }

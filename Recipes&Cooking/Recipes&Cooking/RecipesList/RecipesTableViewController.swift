@@ -1,11 +1,11 @@
 import UIKit
-import CoreData
+import RealmSwift
 
 class RecipesTableViewController: UIViewController {
-    private var recipes = [Recipe]()
+    private var recipes: Results<RecipeModel>?
     private var emptyView = EmptyListView()
 
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let realm = try! Realm()
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
@@ -31,13 +31,12 @@ class RecipesTableViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadItems()
         setupNavigationBar()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadItems()
-        checkEmptyList()
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 
@@ -52,31 +51,23 @@ class RecipesTableViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(createRecipe))
     }
 
-    private func checkEmptyList() {
-        if recipes.isEmpty {
-            view = emptyView
-        } else {
-            view = tableView
-        }
-    }
-
-    private func saveItems() {
-        do {
-            try context.save()
-        } catch {
-            print("Error saving context \(error)")
-        }
-        self.tableView.reloadData()
-    }
-
     private func loadItems() {
-        let request: NSFetchRequest<Recipe> = Recipe.fetchRequest()
-        do {
-            recipes = try context.fetch(request)
-        } catch {
-            print("Error loading data from \(error)")
-        }
+        let realmData = realm.objects(RecipeModel.self)
+        recipes = realmData
         tableView.reloadData()
+    }
+
+    func removeDataFromRealm(indexPath: IndexPath) {
+        do {
+            let realm = try Realm()
+            let selectedRecipe = realm.objects(RecipeModel.self)
+
+            try realm.write {
+                realm.delete(selectedRecipe[indexPath.row])
+            }
+        } catch let error as NSError {
+            print("Error removing data from Realm: \(error.localizedDescription)")
+        }
     }
 }
 
@@ -84,18 +75,17 @@ class RecipesTableViewController: UIViewController {
 
 extension RecipesTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if recipes.isEmpty {
+        if recipes?.count == 0 {
             tableView.backgroundView = EmptyListView()
         } else {
             tableView.backgroundView = nil
         }
-        return recipes.count
+        return recipes?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RecipeCell.self), for: indexPath) as? RecipeCell else { return UITableViewCell() }
-
-        let recipe = recipes[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RecipeCell.self), for: indexPath) as? RecipeCell,
+              let recipe = recipes?[indexPath.row] else { return UITableViewCell() }
         cell.prepareCell(recipe: recipe)
         return cell
     }
@@ -115,18 +105,18 @@ extension RecipesTableViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         setupCellLayout(indexPath: indexPath)
-        let recipes = recipes[indexPath.row]
-        let recipeViewController = DetailViewController(recipe: recipes)
-        recipeViewController.recipe = recipes
-        self.navigationController?.show(recipeViewController, sender: recipes)
+        if let recipes = recipes?[indexPath.row] {
+            let recipeViewController = DetailViewController(recipe: recipes)
+            recipeViewController.recipe = recipes
+            self.navigationController?.show(recipeViewController, sender: recipes)
+        }
     }
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        context.delete(recipes[indexPath.row])
-        recipes.remove(at: indexPath.row)
+        removeDataFromRealm(indexPath: indexPath)
+//        recipes.remove(at: indexPath.row)
         let indexPaths = [indexPath]
         tableView.deleteRows(at: indexPaths, with: .automatic)
-        saveItems()
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

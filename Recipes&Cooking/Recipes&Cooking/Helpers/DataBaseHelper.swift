@@ -6,26 +6,18 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 struct DataBaseHelper {
     static func saveRecipe(recipeModel: RecipeModel) {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let newRecipe = Recipe(context: context)
-
-        recipeModel.dishImage?.pngData() 
-        newRecipe.image = recipeModel.dishImage?.pngData()
-        newRecipe.name = recipeModel.dishName
-        newRecipe.portions = recipeModel.portions
-        newRecipe.timePrepare = recipeModel.time
-        newRecipe.ingredients = recipeModel.ingridients
-        newRecipe.instructions = recipeModel.instructions
-        
         do {
-            try context.save()
-            print("Image saved to Core Data successfully!")
+            let realm = try Realm()
+            try realm.write {
+                realm.add(recipeModel)
+            }
+            print("Recipe saved to Realm successfully! \(realm)")
         } catch {
-            print("Failed to save image: \(error)")
+            print("Failed to save Recipe: \(error)")
         }
     }
 }
