@@ -31,12 +31,13 @@ class RecipesTableViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadItems()
         setupNavigationBar()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        loadItems()
+        checkEmptyList()
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 
@@ -49,6 +50,14 @@ class RecipesTableViewController: UIViewController {
         title = "Receitas"
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Voltar", style: .plain, target: nil, action: nil)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(createRecipe))
+    }
+
+    private func checkEmptyList() {
+        if recipes?.count == 0 {
+            view = EmptyListView()
+        } else {
+            view = tableView
+        }
     }
 
     private func loadItems() {
@@ -114,7 +123,6 @@ extension RecipesTableViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         removeDataFromRealm(indexPath: indexPath)
-//        recipes.remove(at: indexPath.row)
         let indexPaths = [indexPath]
         tableView.deleteRows(at: indexPaths, with: .automatic)
     }
