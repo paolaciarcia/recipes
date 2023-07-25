@@ -161,7 +161,7 @@ extension FormViewController: UIImagePickerControllerDelegate, UINavigationContr
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let selectedImage = info[.originalImage] as? UIImage else { return }
         let pngData = selectedImage.pngData()
-//        recipeModel.dishImage = pngData
+        recipeModel.dishImage = pngData
         dismiss(animated: true)
     }
 }

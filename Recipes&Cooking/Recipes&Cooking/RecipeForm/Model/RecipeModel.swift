@@ -2,7 +2,7 @@ import Foundation
 import RealmSwift
 
 class RecipeModel: Object {
-    var dishImage: Data?
+    @objc dynamic var dishImage: Data?
     @objc dynamic var dishName: String = ""
     @objc dynamic var portions: String = ""
     @objc dynamic var time: String = ""

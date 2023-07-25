@@ -66,9 +66,8 @@ class RecipesTableViewController: UIViewController {
         tableView.reloadData()
     }
 
-    func removeDataFromRealm(indexPath: IndexPath) {
+    private func removeDataFromRealm(indexPath: IndexPath) {
         do {
-            let realm = try Realm()
             let selectedRecipe = realm.objects(RecipeModel.self)
 
             try realm.write {
