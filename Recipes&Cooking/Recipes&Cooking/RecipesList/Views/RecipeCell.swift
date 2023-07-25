@@ -97,8 +97,6 @@ final class RecipeCell: UITableViewCell {
     }
 
     func prepareCell(recipe: RecipeModel) {
-//        guard let timePrepare = recipe.timePrepare,
-//              let portions = recipe.portions else { return }
         titleLabel.text = recipe.dishName
         portionsLabel.text = "Porções: \(recipe.portions)"
         time.text =  "Tempo de Preparo: \(recipe.time)"

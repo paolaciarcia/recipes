@@ -160,8 +160,8 @@ final class FormViewController: UIViewController {
 extension FormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let selectedImage = info[.originalImage] as? UIImage else { return }
-        let pngData = selectedImage.pngData()
-        recipeModel.dishImage = pngData
+        let jpegData = selectedImage.jpegData(compressionQuality: 0.9)
+        recipeModel.dishImage = jpegData
         dismiss(animated: true)
     }
 }

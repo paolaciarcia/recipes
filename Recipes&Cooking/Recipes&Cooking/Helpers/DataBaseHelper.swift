@@ -15,7 +15,6 @@ struct DataBaseHelper {
             try realm.write {
                 realm.add(recipeModel)
             }
-            print("Recipe saved to Realm successfully! \(realm)")
         } catch {
             print("Failed to save Recipe: \(error)")
         }
