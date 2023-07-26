@@ -1,6 +1,5 @@
 platform :ios, '16.2'
 
 target 'Recipes&Cooking' do
-  pod 'RealmSwift', '~>10'
   use_frameworks!
 end

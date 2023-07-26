@@ -1,11 +1,12 @@
 import UIKit
-import RealmSwift
+import SwiftData
 
 class RecipesTableViewController: UIViewController {
-    private var recipes: Results<RecipeModel>?
+    private var recipes = [RecipeModel]()
     private var emptyView = EmptyListView()
 
-    let realm = try! Realm()
+    let descriptor = FetchDescriptor<RecipeModel>()
+//    let realm = try! Realm()
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
@@ -36,7 +37,7 @@ class RecipesTableViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadItems()
+        fetchData()
         checkEmptyList()
         navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -53,28 +54,24 @@ class RecipesTableViewController: UIViewController {
     }
 
     private func checkEmptyList() {
-        if recipes?.count == 0 {
+        if recipes.count == 0 {
             view = EmptyListView()
         } else {
             view = tableView
         }
     }
 
-    private func loadItems() {
-        let realmData = realm.objects(RecipeModel.self)
-        recipes = realmData
-        tableView.reloadData()
-    }
-
-    private func removeDataFromRealm(indexPath: IndexPath) {
-        do {
-            let selectedRecipe = realm.objects(RecipeModel.self)
-
-            try realm.write {
-                realm.delete(selectedRecipe[indexPath.row])
+    private func fetchData() {
+        DataBaseHelper.shared.fetchTasks { data , error  in
+            if let error {
+                print(error)
             }
-        } catch let error as NSError {
-            print("Error removing data from Realm: \(error.localizedDescription)")
+            if let data {
+                self.recipes = data
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
         }
     }
 }
@@ -83,17 +80,20 @@ class RecipesTableViewController: UIViewController {
 
 extension RecipesTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if recipes?.count == 0 {
+        if recipes.count == 0 {
             tableView.backgroundView = EmptyListView()
         } else {
             tableView.backgroundView = nil
         }
-        return recipes?.count ?? 0
+        return recipes.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RecipeCell.self), for: indexPath) as? RecipeCell,
-              let recipe = recipes?[indexPath.row] else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RecipeCell.self), for: indexPath) as? RecipeCell else {
+            return UITableViewCell()
+        }
+
+        let recipe = recipes[indexPath.row]
         cell.prepareCell(recipe: recipe)
         return cell
     }
@@ -113,15 +113,15 @@ extension RecipesTableViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         setupCellLayout(indexPath: indexPath)
-        if let recipes = recipes?[indexPath.row] {
-            let recipeViewController = DetailViewController(recipe: recipes)
-            recipeViewController.recipe = recipes
-            self.navigationController?.show(recipeViewController, sender: recipes)
-        }
+        let recipes = recipes[indexPath.row]
+        let recipeViewController = DetailViewController(recipe: recipes)
+        recipeViewController.recipe = recipes
+        self.navigationController?.show(recipeViewController, sender: recipes)
     }
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        removeDataFromRealm(indexPath: indexPath)
+        DataBaseHelper.shared.deleteRecipe(recipeModel: recipes[indexPath.row])
+        fetchData()
         let indexPaths = [indexPath]
         tableView.deleteRows(at: indexPaths, with: .automatic)
     }

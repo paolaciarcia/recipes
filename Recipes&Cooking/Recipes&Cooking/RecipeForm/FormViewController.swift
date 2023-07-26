@@ -83,7 +83,7 @@ final class FormViewController: UIViewController {
         }
 
         contentView.didTouchContinueButton = { [weak self] in
-            self?.saveRecipeToRealm()
+            self?.saveRecipeToSwiftData()
             self?.navigationController?.popViewController(animated: true)
         }
     }
@@ -152,8 +152,8 @@ final class FormViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    private func saveRecipeToRealm() {
-        DataBaseHelper.saveRecipe(recipeModel: recipeModel)
+    private func saveRecipeToSwiftData() {
+        DataBaseHelper.shared.saveRecipe(recipeModel: recipeModel)
     }
 }
 
