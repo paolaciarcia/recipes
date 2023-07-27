@@ -61,14 +61,14 @@ class RecipesTableViewController: UIViewController {
     }
 
     private func fetchData() {
-        DataBaseHelper.shared.fetchTasks { data, error  in
+        DataBaseHelper.shared.fetchTasks { data, error in
             if let error {
                 print(error)
             }
             if let data {
                 self.recipes = data
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
+                DispatchQueue.main.async { [weak self] in
+                    self?.tableView.reloadData()
                 }
             }
         }

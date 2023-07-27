@@ -24,7 +24,7 @@ class DataBaseHelper {
 
     func saveRecipe(recipeModel: RecipeModel) {
         if let context {
-            context.insert(recipeModel)
+            context.insert(object: recipeModel)
         }
     }
 
@@ -36,7 +36,7 @@ class DataBaseHelper {
     }
 
     func fetchTasks(onCompletion: @escaping([RecipeModel]?, Error?) -> Void) {
-        let descriptor = FetchDescriptor<RecipeModel>()
+        let descriptor = FetchDescriptor<RecipeModel>(sortBy: [SortDescriptor<RecipeModel>(\.time)])
 
         if let context {
             do {
