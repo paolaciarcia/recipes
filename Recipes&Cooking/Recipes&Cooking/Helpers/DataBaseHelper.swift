@@ -16,12 +16,8 @@ class DataBaseHelper {
     init() {
         do {
             container = try ModelContainer(for: [RecipeModel.self])
-            if let container{
-
-                context = ModelContext(container)
-            }
-        }
-        catch {
+            if let container { context = ModelContext(container) }
+        } catch {
             print(error)
         }
     }
@@ -46,8 +42,7 @@ class DataBaseHelper {
             do {
                 let data = try context.fetch(descriptor)
                 onCompletion(data, nil)
-            }
-            catch {
+            } catch {
                 onCompletion(nil, error)
             }
         }

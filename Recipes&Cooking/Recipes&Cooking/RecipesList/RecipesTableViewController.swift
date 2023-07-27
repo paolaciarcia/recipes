@@ -6,7 +6,6 @@ class RecipesTableViewController: UIViewController {
     private var emptyView = EmptyListView()
 
     let descriptor = FetchDescriptor<RecipeModel>()
-//    let realm = try! Realm()
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
@@ -62,7 +61,7 @@ class RecipesTableViewController: UIViewController {
     }
 
     private func fetchData() {
-        DataBaseHelper.shared.fetchTasks { data , error  in
+        DataBaseHelper.shared.fetchTasks { data, error  in
             if let error {
                 print(error)
             }
